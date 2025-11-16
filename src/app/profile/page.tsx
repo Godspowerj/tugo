@@ -2,6 +2,7 @@
 "use client"
 import React, { useState } from 'react';
 import { Edit, LogOut, User, Camera, GraduationCap, MapPin, DollarSign, Home } from 'lucide-react';
+import BottomNav from '@/src/components/navigation';
 
 // Types
 interface ProfileData {
@@ -243,45 +244,7 @@ const TugoProfilePage: React.FC = () => {
       )}
 
       {/* Bottom Navigation - Fixed */}
-      <nav className="fixed bottom-0 left-0 right-0 z-20 px-4 sm:px-6 py-3 sm:py-4 bg-black/80 backdrop-blur-lg border-t border-white/10 safe-area-bottom">
-        <div className="max-w-md mx-auto flex items-center justify-around">
-          {/* Explore */}
-          <button 
-            onClick={() => alert('Navigate to Explore page')}
-            className="flex flex-col items-center gap-1 sm:gap-1.5 group min-w-[60px] sm:min-w-[70px]"
-          >
-            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all group-hover:scale-110">
-              <svg className="w-5 sm:w-6 h-5 sm:h-6 text-gray-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            </div>
-            <span className="text-xs font-semibold text-gray-400 group-hover:text-white transition-colors">Explore</span>
-          </button>
-
-          {/* Matches */}
-          <button 
-            onClick={() => alert('Navigate to Matches page')}
-            className="flex flex-col items-center gap-1 sm:gap-1.5 group min-w-[60px] sm:min-w-[70px]"
-          >
-            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all group-hover:scale-110">
-              <svg className="w-5 sm:w-6 h-5 sm:h-6 text-gray-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-              </svg>
-            </div>
-            <span className="text-xs font-semibold text-gray-400 group-hover:text-white transition-colors">Matches</span>
-          </button>
-
-          {/* Profile - Active */}
-          <button className="flex flex-col items-center gap-1 sm:gap-1.5 group min-w-[60px] sm:min-w-[70px]">
-            <div className="relative">
-              <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-white flex items-center justify-center transition-all">
-                <User className="w-5 sm:w-6 h-5 sm:h-6 text-black" />
-              </div>
-            </div>
-            <span className="text-xs font-bold text-white">Profile</span>
-          </button>
-        </div>
-      </nav>
+      <BottomNav />
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap');

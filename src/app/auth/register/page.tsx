@@ -1,6 +1,9 @@
 "use client";
 import { useState } from "react";
 import { Mail, Lock, User, ArrowLeft, Eye, EyeOff } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+
 
 const Registration = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -11,6 +14,7 @@ const Registration = () => {
     university: "",
     confirmPassword: "",
   });
+  const router = useRouter()
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -19,9 +23,10 @@ const Registration = () => {
     });
   };
 
-  const handleSubmit =  (e: React.MouseEvent<HTMLButtonElement>)  => {
+  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
+    router.push("/setup")
   };
 
   return (
@@ -29,10 +34,12 @@ const Registration = () => {
       <div>
         <div className="space-y-8">
           {/* Back Button */}
-          <button className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
-            <ArrowLeft className="w-4 h-4" />
-            <span className="text-sm">Back to login</span>
-          </button>
+          <Link href="/auth/login">
+            <button className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
+              <ArrowLeft className="w-4 h-4" />
+              <span className="text-sm">Back to login</span>
+            </button>
+          </Link>
 
           {/* Title */}
           <div className="text-center space-y-3">

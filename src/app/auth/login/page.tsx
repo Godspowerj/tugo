@@ -1,6 +1,8 @@
 "use client";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(true);
@@ -8,6 +10,7 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const router = useRouter();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
@@ -17,6 +20,12 @@ const Login = () => {
       ...formData,
       [name]: value,
     });
+  };
+
+  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    console.log("Form submitted:", formData);
+    router.push("/home");
   };
 
   return (
@@ -80,13 +89,18 @@ const Login = () => {
 
             {/* Forgot Password */}
             <div className="text-right">
-              <button className="text-sm text-gray-400 hover:text-white transition-colors">
-                Forgot password?
-              </button>
+              <Link href="/auth/resetPassword">
+                <button className="text-sm text-gray-400 hover:text-white transition-colors">
+                  Forgot password?
+                </button>
+              </Link>
             </div>
 
             {/* Submit Button */}
-            <button className="w-full py-4 bg-white text-black rounded-full font-bold hover:bg-gray-100 transition-all transform hover:scale-105 active:scale-95">
+            <button
+              onClick={handleSubmit}
+              className="w-full py-4 bg-white text-black rounded-full font-bold hover:bg-gray-100 transition-all transform hover:scale-105 active:scale-95"
+            >
               Sign In
             </button>
 
@@ -103,9 +117,11 @@ const Login = () => {
             {/* Sign Up Link */}
             <div className="text-center">
               <span className="text-gray-400">Don't have an account? </span>
-              <button className="text-white font-semibold hover:underline">
-                Sign Up
-              </button>
+              <Link href="/auth/register">
+                <button className="text-white font-semibold hover:underline">
+                  Sign Up
+                </button>
+              </Link>
             </div>
           </div>
         </div>

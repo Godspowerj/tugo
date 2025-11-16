@@ -1,26 +1,25 @@
-"use client"
+"use client";
 import React, { useState } from "react";
-import { Mail, Lock, User, ArrowLeft, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, User, ArrowLeft, Eye, EyeOff } from "lucide-react";
+import Link from "next/link";
 
 const ResetPassword = () => {
-  const [formData , setformData ] = useState({
-    email : ""
-  })
+  const [formData, setformData] = useState({
+    email: "",
+  });
 
-  const handleInputChange = (e:React.ChangeEvent<HTMLInputElement>) =>{
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setformData({
       ...formData,
       [e.target.name]: e.target.value,
-    })
-  }
+    });
+  };
 
   return (
     <>
       <div className="space-y-8">
         {/* Back Button */}
-        <button
-          className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
-        >
+        <button className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
           <ArrowLeft className="w-4 h-4" />
           <span className="text-sm">Back to login</span>
         </button>
@@ -30,7 +29,7 @@ const ResetPassword = () => {
           <h1 className="text-4xl font-black">Reset Password</h1>
           <p className="text-gray-400">
             Enter your email to receive a reset link
-          </p> 
+          </p>
         </div>
 
         {/* Form */}
@@ -52,11 +51,11 @@ const ResetPassword = () => {
           </div>
 
           {/* Submit Button */}
-          <button
-            className="w-full py-4 bg-white text-black rounded-full font-bold hover:bg-gray-100 transition-all transform hover:scale-105 active:scale-95"
-          >
-            Send Reset Link
-          </button>
+          <Link href="/auth/otp">
+            <button className="w-full py-4 bg-white text-black rounded-full font-bold hover:bg-gray-100 transition-all transform hover:scale-105 active:scale-95">
+              Send Reset Link
+            </button>
+          </Link>
 
           {/* Info Box */}
           <div className="p-4 bg-white/5 border border-white/10 rounded-2xl">

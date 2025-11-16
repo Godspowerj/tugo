@@ -2,6 +2,7 @@
 "use client"
 import React, { useState } from 'react';
 import { X, MessageCircle, MapPin, GraduationCap, Star, Search, Filter, Phone, Video, MoreVertical, Send, ArrowLeft, User } from 'lucide-react';
+import BottomNav from '@/src/components/navigation';
 
 // Types
 interface Message {
@@ -453,7 +454,8 @@ const TugoMatchesPage: React.FC = () => {
           </div>
         </div>
       )}
-
+      
+      <BottomNav/>
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap');

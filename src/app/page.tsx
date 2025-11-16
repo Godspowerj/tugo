@@ -130,7 +130,7 @@ export default function TugoOnboarding() {
   };
 
   const handleGetStarted = () => {
-    router.push("/auth/register")
+    router.push("/auth/login")
   };
 
   return (
