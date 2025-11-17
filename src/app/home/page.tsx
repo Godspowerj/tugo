@@ -299,7 +299,7 @@ const TugoExploreMatches: React.FC = () => {
                 <h4 className="text-xs sm:text-sm font-bold text-gray-400 uppercase tracking-wide">
                   About
                 </h4>
-                <p className="text-white text-xs sm:text-sm leading-relaxed">
+                <p className="text-white text-sm leading-relaxed">
                   {currentProfile.bio}
                 </p>
               </div>
@@ -309,7 +309,7 @@ const TugoExploreMatches: React.FC = () => {
                 <h4 className="text-xs sm:text-sm font-bold text-gray-400 uppercase tracking-wide">
                   Looking For
                 </h4>
-                <p className="text-white text-xs sm:text-sm leading-relaxed">
+                <p className="text-white text-sm leading-relaxed">
                   {currentProfile.lookingFor}
                 </p>
               </div>

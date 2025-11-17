@@ -60,10 +60,10 @@ const TugoProfilePage: React.FC = () => {
         <div className="flex items-center justify-between max-w-7xl mx-auto">
           <div className="flex items-center gap-2 sm:gap-3">
             <div className="flex items-center gap-1.5">
-              <div className="w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full bg-white"></div>
-              <div className="w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full bg-gray-400"></div>
+              <div className="w-2.5 h-2.5 rounded-full bg-white"></div>
+              <div className="w-2.5 h-2.5 rounded-full bg-gray-400"></div>
             </div>
-            <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">Tugo</h2>
+            <h2 className="text-2xl font-bold text-white tracking-tight">Tugo</h2>
           </div>
           <button 
             onClick={() => alert('Logging out...')}
@@ -244,7 +244,7 @@ const TugoProfilePage: React.FC = () => {
       )}
 
       {/* Bottom Navigation - Fixed */}
-      <BottomNav />
+      <BottomNav/>
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap');

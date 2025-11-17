@@ -96,7 +96,7 @@ export default function TugoOTPPage() {
   const isComplete = otp.every((digit) => digit !== "");
 
   return (
-    <div className="relative flex  w-full text-white overflow-hidden font-['Plus_Jakarta_Sans',sans-serif]">
+    <div className="relative flex  w-full text-white font-['Plus_Jakarta_Sans',sans-serif]">
       <div className="w-full max-w-md animate-fade-in-up">
         <div className="space-y-8">
           {/* Back Button */}

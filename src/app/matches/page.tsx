@@ -260,7 +260,7 @@ const TugoMatchesPage: React.FC = () => {
                           )}
                           {match.unread > 0 && (
                             <div className="absolute -top-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 bg-white rounded-full flex items-center justify-center">
-                              <span className="text-black text-xs font-bold">{match.unread}</span>
+                              <span className="text-black text-sm font-bold">{match.unread}</span>
                             </div>
                           )}
                         </div>
@@ -274,13 +274,13 @@ const TugoMatchesPage: React.FC = () => {
                                 <span className="text-xs font-bold">{match.matchScore}%</span>
                               </div>
                             </div>
-                            <span className="text-xs text-gray-500 flex-shrink-0 ml-2">{match.lastMessageTime}</span>
+                            <span className="text-sm text-gray-500 flex-shrink-0 ml-2">{match.lastMessageTime}</span>
                           </div>
                           <div className="flex items-center gap-2 text-gray-400 text-xs mb-1.5 sm:mb-2">
                             <GraduationCap className="w-3 h-3" />
                             <span className="truncate">{match.major}</span>
                           </div>
-                          <p className={`text-xs sm:text-sm line-clamp-1 ${match.unread > 0 ? 'text-white font-semibold' : 'text-gray-400'}`}>
+                          <p className={`text-sm sm:text-sm line-clamp-1 ${match.unread > 0 ? 'text-white font-semibold' : 'text-gray-400'}`}>
                             {match.lastMessage}
                           </p>
                         </div>
@@ -327,7 +327,7 @@ const TugoMatchesPage: React.FC = () => {
                             <MapPin className="w-3 h-3" />
                             <span className="truncate">{match.location}</span>
                           </div>
-                          <p className="text-xs sm:text-sm text-gray-400 line-clamp-2">{match.bio}</p>
+                          <p className="text-sm sm:text-sm text-gray-400 line-clamp-2">{match.bio}</p>
                         </div>
 
                         <div className="flex flex-col items-center gap-1.5 sm:gap-2 flex-shrink-0">
@@ -418,7 +418,7 @@ const TugoMatchesPage: React.FC = () => {
                         ? 'bg-white text-black rounded-br-sm' 
                         : 'bg-white/10 text-white rounded-bl-sm'
                     }`}>
-                      <p className="text-xs sm:text-sm leading-relaxed">{msg.text}</p>
+                      <p className="text-sm sm:text-sm leading-relaxed">{msg.text}</p>
                     </div>
                     <p className="text-xs text-gray-500 mt-1 px-2">{msg.time}</p>
                   </div>
