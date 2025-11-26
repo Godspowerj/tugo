@@ -1,5 +1,5 @@
 "use client";
-import Header from "@/src/components/header";
+import Header from "@/src/component/header";
 import { ReactNode } from "react";
 
 interface AuthLayoutProps {

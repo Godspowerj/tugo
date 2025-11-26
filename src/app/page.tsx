@@ -2,7 +2,7 @@
 import React, { useState  } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowRight, Users, Zap, Sparkles, Home, MessageCircle, UserCheck } from 'lucide-react';
-import Header from '../components/header';
+import Header from '../component/header';
 
 export default function TugoOnboarding() {
   const [currentScreen, setCurrentScreen] = useState(0);

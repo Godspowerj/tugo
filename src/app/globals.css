@@ -1,2 +1,59 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-geist-sans);
+    font-family: "MyAppFont", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+
+@font-face {
+   font-family: "MyAppFont";
+  src: url(/fonts/circular-std-medium-500.ttf) format('truetype');
+  font-weight:bold;
+  font-style: normal;
+}
+
+
+
+.Toastify__toast,
+.Toastify__toast-body,
+.toastify-toast,
+.Toastify__toast-container,
+.toastify-container,
+.sonner,
+.sonner_toast,
+.sonner_toast_body,
+.sonner_toast-container {
+  font-family: inherit;
+}
+.sonner_toast,
+.sonner_toast_body,
+.sonner_toast-container {
+  font-family: inherit !important;
+}
+
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+button {
+  cursor: pointer;
+}
+.toastify-container {
+  z-index: 9999;
+}
+.toastify-toast {
+  border-radius: 8px;
+}
+.Toastify__toast-container,
+.toastify-container {
+  font-family: inherit;
+}
+
 

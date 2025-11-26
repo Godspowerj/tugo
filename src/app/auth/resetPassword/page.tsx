@@ -1,18 +1,46 @@
 "use client";
 import React, { useState } from "react";
 import { Mail, Lock, User, ArrowLeft, Eye, EyeOff } from "lucide-react";
-import Link from "next/link";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const ResetPassword = () => {
   const [formData, setformData] = useState({
     email: "",
   });
+  const router = useRouter();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setformData({
       ...formData,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const handleRequestReset = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:5000/api/password-reset/request",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: formData.email }),
+        }
+      );
+
+      const data = await response.json();
+      if (data.success) {
+        toast.success(data.message); // Password reset email sent
+        setTimeout(() => {
+          window.location.href = `/auth/otp?email=${encodeURIComponent(formData.email)}`;
+        }, 3000);
+        
+      } else {
+        toast.error(data.message); // Error message from server
+      }
+    } catch (error) {
+      console.error("Request reset error:", error);
+    }
   };
 
   return (
@@ -51,11 +79,12 @@ const ResetPassword = () => {
           </div>
 
           {/* Submit Button */}
-          <Link href="/auth/otp">
-            <button className="w-full py-4 bg-white text-black rounded-full font-bold hover:bg-gray-100 transition-all transform hover:scale-105 active:scale-95">
-              Send Reset Link
-            </button>
-          </Link>
+          <button
+            onClick={handleRequestReset}
+            className="w-full py-4 bg-white text-black rounded-full font-bold hover:bg-gray-100 transition-all transform hover:scale-105 active:scale-95"
+          >
+            Send Reset Link
+          </button>
 
           {/* Info Box */}
           <div className="p-4 bg-white/5 border border-white/10 rounded-2xl">
