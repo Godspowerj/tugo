@@ -1,4 +1,3 @@
-import { apiClient } from '../lib/axios';
 import axios from 'axios';
 
 export interface WaitlistResponse {
@@ -10,7 +9,7 @@ export interface WaitlistResponse {
 export const waitlistApi = {
     joinWaitlist: async (email: string): Promise<WaitlistResponse> => {
         try {
-            const response = await apiClient.post('/waitlist', { email });
+            const response = await axios.post('https://tugobackend.onrender.com/api/waitlist', { email });
             return response.data;
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
