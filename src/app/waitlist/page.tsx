@@ -82,13 +82,13 @@ export default function TugoWaitlist() {
 
           {/* Main Heading */}
           <div className="space-y-4 sm:space-y-6">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black leading-tight tracking-tight px-4">
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black leading-tight tracking-tight px-4">
               Your Complete{' '}
               <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
                 Student Hub
               </span>
             </h1>
-            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed px-4">
+            <p className="text-base sm:text-lg lg:text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed px-4">
               Find roommates, buy & sell student essentials, and discover local businesses — all in one platform built exclusively for students.
             </p>
           </div>
@@ -152,13 +152,13 @@ export default function TugoWaitlist() {
       <section className="relative z-10 px-4 sm:px-6 py-12 sm:py-16 lg:py-20 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent">
         <div className="max-w-6xl mx-auto space-y-8 sm:space-y-12">
           <div className="text-center space-y-3 sm:space-y-4 animate-fade-in">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black tracking-tight px-4">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight px-4">
               Everything You Need,{' '}
               <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
                 One Platform
               </span>
             </h2>
-            <p className="text-gray-400 text-sm sm:text-base lg:text-lg max-w-2xl mx-auto px-4">
+            <p className="text-base sm:text-lg lg:text-xl text-gray-400 max-w-2xl mx-auto px-4">
               TUGO brings together all the essential tools students need to thrive in campus life.
             </p>
           </div>
@@ -174,7 +174,7 @@ export default function TugoWaitlist() {
                 </div>
                 <div className="space-y-2 sm:space-y-3">
                   <h3 className="text-xl sm:text-2xl font-bold">Find Roommates</h3>
-                  <p className="text-gray-400 text-sm sm:text-base leading-relaxed">
+                  <p className="text-sm sm:text-base text-gray-400 leading-relaxed">
                     Connect with compatible roommates through our smart matching algorithm. Filter by lifestyle, major, and preferences to find your perfect match.
                   </p>
                 </div>
@@ -196,7 +196,7 @@ export default function TugoWaitlist() {
                 </div>
                 <div className="space-y-2 sm:space-y-3">
                   <h3 className="text-xl sm:text-2xl font-bold">Student Marketplace</h3>
-                  <p className="text-gray-400 text-sm sm:text-base leading-relaxed">
+                  <p className="text-sm sm:text-base text-gray-400 leading-relaxed">
                     Buy and sell textbooks, furniture, electronics, and more. Connect directly with students on your campus for safe, convenient transactions.
                   </p>
                 </div>
@@ -218,7 +218,7 @@ export default function TugoWaitlist() {
                 </div>
                 <div className="space-y-2 sm:space-y-3">
                   <h3 className="text-xl sm:text-2xl font-bold">Discover Local Deals</h3>
-                  <p className="text-gray-400 text-sm sm:text-base leading-relaxed">
+                  <p className="text-sm sm:text-base text-gray-400 leading-relaxed">
                     Find exclusive student discounts and promotions from local businesses. From food to services, save money on everything you need.
                   </p>
                 </div>
@@ -238,13 +238,13 @@ export default function TugoWaitlist() {
       <section className="relative z-10 px-4 sm:px-6 py-12 sm:py-16 lg:py-20">
         <div className="max-w-6xl mx-auto space-y-8 sm:space-y-12">
           <div className="text-center space-y-3 sm:space-y-4 animate-fade-in">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black tracking-tight px-4">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight px-4">
               Built for Students,{' '}
               <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
                 By Students
               </span>
             </h2>
-            <p className="text-gray-400 text-sm sm:text-base lg:text-lg max-w-2xl mx-auto px-4">
+            <p className="text-base sm:text-lg lg:text-xl text-gray-400 max-w-2xl mx-auto px-4">
               We understand student life. That's why TUGO is designed with features that matter most to you.
             </p>
           </div>
@@ -258,8 +258,8 @@ export default function TugoWaitlist() {
                   <Shield className="w-6 h-6 sm:w-7 sm:h-7 text-green-400" />
                 </div>
                 <div className="space-y-1.5 sm:space-y-2">
-                  <h3 className="text-lg sm:text-xl font-bold">Verified Students Only</h3>
-                  <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">
+                  <h3 className="text-xl sm:text-2xl font-bold">Verified Students Only</h3>
+                  <p className="text-sm sm:text-base text-gray-400 leading-relaxed">
                     Every user is verified with their university email, ensuring a safe and trustworthy community of real students.
                   </p>
                 </div>
@@ -274,8 +274,8 @@ export default function TugoWaitlist() {
                   <MessageSquare className="w-6 h-6 sm:w-7 sm:h-7 text-blue-400" />
                 </div>
                 <div className="space-y-1.5 sm:space-y-2">
-                  <h3 className="text-lg sm:text-xl font-bold">Built-in Messaging</h3>
-                  <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">
+                  <h3 className="text-xl sm:text-2xl font-bold">Built-in Messaging</h3>
+                  <p className="text-sm sm:text-base text-gray-400 leading-relaxed">
                     Chat directly with potential roommates or sellers without sharing personal contact information until you're ready.
                   </p>
                 </div>
@@ -290,8 +290,8 @@ export default function TugoWaitlist() {
                   <Sparkles className="w-6 h-6 sm:w-7 sm:h-7 text-yellow-400" />
                 </div>
                 <div className="space-y-1.5 sm:space-y-2">
-                  <h3 className="text-lg sm:text-xl font-bold">Smart Recommendations</h3>
-                  <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">
+                  <h3 className="text-xl sm:text-2xl font-bold">Smart Recommendations</h3>
+                  <p className="text-sm sm:text-base text-gray-400 leading-relaxed">
                     Our AI-powered system learns your preferences and suggests the best matches, listings, and deals just for you.
                   </p>
                 </div>
@@ -305,13 +305,13 @@ export default function TugoWaitlist() {
       <section className="relative z-10 px-4 sm:px-6 py-12 sm:py-16 lg:py-20">
         <div className="max-w-4xl mx-auto text-center space-y-6 sm:space-y-8">
           <div className="space-y-3 sm:space-y-4">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black tracking-tight px-4">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight px-4">
               Ready to Transform Your{' '}
               <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
                 Student Life?
               </span>
             </h2>
-            <p className="text-gray-400 text-sm sm:text-base lg:text-lg max-w-2xl mx-auto px-4">
+            <p className="text-base sm:text-lg lg:text-xl text-gray-400 max-w-2xl mx-auto px-4">
               Join thousands of students on the waitlist. Be the first to experience TUGO when we launch.
             </p>
           </div>

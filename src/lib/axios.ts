@@ -1,6 +1,6 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://tugobackend.onrender.com/api';
 
 // Create a custom interface for the config to include the _retry flag
 interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
