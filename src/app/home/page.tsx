@@ -52,10 +52,11 @@ const TugoExplorePage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="min-h-screen bg-black text-white overflow-hidden font-['Plus_Jakarta_Sans',sans-serif]">
+      <div className="min-h-screen bg-black text-white overflow-x-hidden font-['Plus_Jakarta_Sans',sans-serif]">
+        {/* Background gradients - adjusted for mobile */}
         <div className="fixed inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+          <div className="absolute top-0 left-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-white/5 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-0 right-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-white/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
         </div>
 
         <HomeHeader
@@ -76,16 +77,18 @@ const TugoExplorePage: React.FC = () => {
         )}
 
         {loading ? (
-          <div className="relative z-10 max-w-7xl mx-auto px-4 py-6 pb-32 grid grid-cols-1 md:grid-cols-2 gap-6">
-            {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="space-y-4">
-                <Skeleton className="h-64 w-full" />
-                <div className="space-y-2">
-                  <Skeleton className="h-4 w-3/4" />
-                  <Skeleton className="h-4 w-1/2" />
+          <div className="relative z-10 w-full max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 pb-24 sm:pb-32">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="space-y-3 sm:space-y-4 w-full">
+                  <Skeleton className="h-48 sm:h-56 md:h-64 w-full rounded-2xl" />
+                  <div className="space-y-2 px-1">
+                    <Skeleton className="h-4 w-3/4" />
+                    <Skeleton className="h-4 w-1/2" />
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         ) : (
           <FeedSection
@@ -105,6 +108,17 @@ const TugoExplorePage: React.FC = () => {
 
         <style jsx global>{`
           @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap');
+          
+          /* Prevent horizontal scroll */
+          html, body {
+            overflow-x: hidden;
+            max-width: 100vw;
+          }
+          
+          /* Ensure all containers respect viewport width */
+          * {
+            box-sizing: border-box;
+          }
         `}</style>
       </div>
     </MainLayout>
