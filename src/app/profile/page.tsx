@@ -172,108 +172,106 @@ const TugoProfilePage = () => {
         {/* Main Content */}
         <div className="max-w-7xl mx-auto px-4">
           {/* Profile Header Section */}
-            <div className="pt-10 pb-8 px-4">
-              <div className="max-w-7xl mx-auto">
-                <div className="bg-gradient-to-b from-white/10 to-white/5 rounded-3xl border border-white/20 p-6 md:p-8">
-                  <div className="flex flex-col md:flex-row gap-6">
-                    {/* Profile Image */}
-                    <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 lg:w-48 lg:h-48 rounded-full overflow-hidden flex-shrink-0">
-                      {profile.profilePicture ? (
-                        <img
-                          src={profile.profilePicture}
-                          alt="Profile"
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-500 to-purple-500">
-                          <span className="text-5xl md:text-6xl font-black text-white">
-                            {profile.user?.fullName?.charAt(0).toUpperCase() || "U"}
+          <div className="pt-10 pb-8">
+            <div className="max-w-7xl mx-auto">
+              <div className="bg-gradient-to-b from-white/10 to-white/5 rounded-3xl border border-white/20 p-4 sm:p-6 md:p-8">
+                <div className="flex flex-col md:flex-row gap-6">
+                  {/* Profile Image */}
+                  <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 lg:w-48 lg:h-48 rounded-full overflow-hidden flex-shrink-0">
+                    {profile.profilePicture ? (
+                      <img
+                        src={profile.profilePicture}
+                        alt="Profile"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-500 to-purple-500">
+                        <span className="text-5xl md:text-6xl font-black text-white">
+                          {profile.user?.fullName?.charAt(0).toUpperCase() || "U"}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Profile Info */}
+                  <div className="flex-1 space-y-4">
+                    <div className="flex items-start justify-between gap-4 flex-wrap">
+                      <div>
+                        <div className="flex items-center gap-2 mb-1 flex-wrap">
+                          <h2 className="text-3xl sm:text-4xl font-black">
+                            {profile.user?.fullName || "User"}
+                          </h2>
+                          <span className="px-2 py-1 bg-blue-500/20 text-blue-400 text-xs font-bold rounded-full border border-blue-500/40">
+                            VERIFIED
                           </span>
                         </div>
-                      )}
+                        <div className="flex items-center gap-2 text-white/80 text-sm mb-2">
+                          <GraduationCap className="w-4 h-4 flex-shrink-0" />
+                          <span>{profile.major} • {profile.year}</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-white/70 text-sm">
+                          <MapPin className="w-4 h-4 flex-shrink-0" />
+                          <span>{profile.university}</span>
+                        </div>
+                      </div>
+
+                      <button
+                        onClick={() => setIsEditModalOpen(true)}
+                        className="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full text-sm font-bold transition-all flex items-center gap-2 hover:scale-105 active:scale-95"
+                      >
+                        <Edit className="w-4 h-4" />
+                        <span className="hidden sm:inline">Edit Profile</span>
+                        <span className="sm:hidden">Edit</span>
+                      </button>
                     </div>
 
-                    {/* Profile Info */}
-                    <div className="flex-1 space-y-4">
-                      <div className="flex items-start justify-between gap-4 flex-wrap">
-                        <div>
-                          <div className="flex items-center gap-2 mb-1 flex-wrap">
-                            <h2 className="text-2xl md:text-4xl font-black">
-                              {profile.user?.fullName || "User"}
-                            </h2>
-                            <span className="px-2 py-1 bg-blue-500/20 text-blue-400 text-xs font-bold rounded-full border border-blue-500/40">
-                              VERIFIED
-                            </span>
-                          </div>
-                          <div className="flex items-center gap-2 text-white/80 text-sm mb-2">
-                            <GraduationCap className="w-4 h-4 flex-shrink-0" />
-                            <span>{profile.major} • {profile.year}</span>
-                          </div>
-                          <div className="flex items-center gap-2 text-white/70 text-sm">
-                            <MapPin className="w-4 h-4 flex-shrink-0" />
-                            <span>{profile.university}</span>
-                          </div>
-                        </div>
-
-                        <button
-                          onClick={() => setIsEditModalOpen(true)}
-                          className="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full text-sm font-bold transition-all flex items-center gap-2 hover:scale-105 active:scale-95"
-                        >
-                          <Edit className="w-4 h-4" />
-                          <span className="hidden sm:inline">Edit Profile</span>
-                          <span className="sm:hidden">Edit</span>
-                        </button>
+                    {/* Stats */}
+                    <div className="flex gap-4 md:gap-6 py-4 border-y border-white/10">
+                      <div className="text-center">
+                        <div className="text-xl md:text-2xl font-black">0</div>
+                        <div className="text-xs text-white/70">Listings</div>
                       </div>
-
-                      {/* Stats */}
-                      <div className="flex gap-4 md:gap-6 py-4 border-y border-white/10">
-                        <div className="text-center">
-                          <div className="text-xl md:text-2xl font-black">0</div>
-                          <div className="text-xs text-white/70">Listings</div>
-                        </div>
-                        <div className="text-center">
-                          <div className="text-xl md:text-2xl font-black">0</div>
-                          <div className="text-xs text-white/70">Views</div>
-                        </div>
-                        <div className="text-center">
-                          <div className="text-xl md:text-2xl font-black flex items-center gap-1 justify-center">
-                            <Star className="w-4 md:w-5 h-4 md:h-5 text-yellow-400 fill-yellow-400" />
-                            5.0
-                          </div>
-                          <div className="text-xs text-white/70">Rating</div>
-                        </div>
+                      <div className="text-center">
+                        <div className="text-xl md:text-2xl font-black">0</div>
+                        <div className="text-xs text-white/70">Views</div>
                       </div>
-
-                      {/* Action Buttons */}
-                      <div className="flex gap-3">
-                        <button
-                          onClick={() => toast.info("Messaging feature coming soon!")}
-                          className="flex-1 px-4 py-3 bg-white text-black rounded-full font-bold hover:bg-gray-100 transition-all transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
-                        >
-                          <MessageCircle className="w-4 h-4" />
-                          Message
-                        </button>
-                        <button
-                          onClick={() => toast.success("Added to favorites!")}
-                          className="px-4 py-3 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full font-bold transition-all flex items-center justify-center"
-                        >
-                          <Heart className="w-5 h-5" />
-                        </button>
+                      <div className="text-center">
+                        <div className="text-xl md:text-2xl font-black flex items-center gap-1 justify-center">
+                          <Star className="w-4 md:w-5 h-4 md:h-5 text-yellow-400 fill-yellow-400" />
+                          5.0
+                        </div>
+                        <div className="text-xs text-white/70">Rating</div>
                       </div>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex gap-3">
+                      <button
+                        onClick={() => toast.info("Messaging feature coming soon!")}
+                        className="flex-1 px-4 py-3 bg-white text-black rounded-full font-bold hover:bg-gray-100 transition-all transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
+                      >
+                        <MessageCircle className="w-4 h-4" />
+                        Message
+                      </button>
+                      <button
+                        onClick={() => toast.success("Added to favorites!")}
+                        className="px-4 py-3 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full font-bold transition-all flex items-center justify-center"
+                      >
+                        <Heart className="w-5 h-5" />
+                      </button>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          
-        
+          </div>
 
           {/* Two Column Layout */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Left Column */}
             <div className="lg:col-span-2 space-y-6">
               {/* About Section */}
-              <div className="bg-gradient-to-b from-white/10 to-white/5 rounded-2xl border border-white/20 p-6">
+              <div className="bg-gradient-to-b from-white/10 to-white/5 rounded-2xl border border-white/20 p-4 sm:p-6">
                 <h3 className="text-xl font-black mb-4 flex items-center gap-2">
                   <Sparkles className="w-5 h-5" />
                   About Me
@@ -284,7 +282,7 @@ const TugoProfilePage = () => {
               </div>
 
               {/* Lifestyle */}
-              <div className="bg-gradient-to-b from-white/10 to-white/5 rounded-2xl border border-white/20 p-6">
+              <div className="bg-gradient-to-b from-white/10 to-white/5 rounded-2xl border border-white/20 p-4 sm:p-6">
                 <h3 className="text-xl font-black mb-4">My Lifestyle</h3>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                   {profile.lifestyles.map((lifestyle: string, idx: number) => (
@@ -307,7 +305,7 @@ const TugoProfilePage = () => {
             {/* Right Column */}
             <div className="space-y-6">
               {/* Contact Info */}
-              <div className="bg-gradient-to-b from-white/10 to-white/5 rounded-2xl border border-white/20 p-6">
+              <div className="bg-gradient-to-b from-white/10 to-white/5 rounded-2xl border border-white/20 p-4 sm:p-6">
                 <h3 className="text-lg font-black mb-4">Contact</h3>
                 <div className="space-y-4">
                   <div className="flex items-center gap-3">
@@ -350,7 +348,7 @@ const TugoProfilePage = () => {
               </div>
 
               {/* Verification */}
-              <div className="bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-2xl border-2 border-blue-500/40 p-6">
+              <div className="bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-2xl border-2 border-blue-500/40 p-4 sm:p-6">
                 <div className="flex items-start gap-3 mb-3">
                   <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
                     <CheckCircle className="w-6 h-6 text-white fill-current" />

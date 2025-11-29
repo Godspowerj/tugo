@@ -23,7 +23,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({
                             <div className="w-2.5 h-2.5 rounded-full bg-white"></div>
                             <div className="w-2.5 h-2.5 rounded-full bg-gray-400"></div>
                         </div>
-                        <h1 className="text-2xl font-black text-white tracking-tight">Tugo</h1>
+                        <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight">Tugo</h1>
                     </div>
                     <button
                         onClick={() => setShowFilters(!showFilters)}

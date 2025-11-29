@@ -272,8 +272,8 @@ export default function UnifiedPostPage() {
         onBack={() => router.back()}
       />
 
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="bg-gradient-to-b from-white/10 to-white/5 rounded-3xl border border-white/20 p-6 md:p-8 min-h-[500px]">
+      <div className="max-w-4xl mx-auto py-8">
+        <div className="bg-gradient-to-b from-white/10 to-white/5 rounded-3xl border border-white/20 p-4 sm:p-6 md:p-8 min-h-[500px]">
 
           {/* Step 0: Choose Category */}
           {currentStep === 0 && (

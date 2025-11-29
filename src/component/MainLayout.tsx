@@ -20,18 +20,6 @@ const MainLayout: React.FC<MainLayoutProps> = ({
                 {/* Gradient orbs */}
                 <div className="absolute top-20 left-10 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[120px] animate-float" />
                 <div className="absolute bottom-20 right-10 w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[120px] animate-float-delayed" />
-
-                {/* Grid pattern overlay */}
-                <div
-                    className="absolute inset-0 opacity-[0.03]"
-                    style={{
-                        backgroundImage: `
-                            linear-gradient(to right, white 1px, transparent 1px),
-                            linear-gradient(to bottom, white 1px, transparent 1px)
-                        `,
-                        backgroundSize: '60px 60px'
-                    }}
-                />
             </div>
 
             {/* Content Container */}

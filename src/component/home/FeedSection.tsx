@@ -12,7 +12,7 @@ interface FeedSectionProps {
 
 const FeedSection: React.FC<FeedSectionProps> = ({ sponsoredItems, regularItems }) => {
     return (
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 pb-24 sm:pb-32">
+        <div className="relative z-10 w-full max-w-7xl mx-auto py-4 sm:py-6 pb-24 sm:pb-32">
             {/* Sponsored section */}
             {sponsoredItems.length > 0 && (
                 <div className="mb-8 sm:mb-12">
@@ -33,8 +33,8 @@ const FeedSection: React.FC<FeedSectionProps> = ({ sponsoredItems, regularItems 
             {/* Regular listings */}
             <div>
                 <h2 className="text-xl sm:text-2xl font-black text-white mb-4 sm:mb-6 px-1">All Listings</h2>
-                <motion.div 
-                    layout 
+                <motion.div
+                    layout
                     className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6"
                 >
                     <AnimatePresence>

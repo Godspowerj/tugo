@@ -77,7 +77,7 @@ const TugoExplorePage: React.FC = () => {
         )}
 
         {loading ? (
-          <div className="relative z-10 w-full max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 pb-24 sm:pb-32">
+          <div className="relative z-10 w-full max-w-7xl mx-auto py-4 sm:py-6 pb-24 sm:pb-32">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
               {[1, 2, 3, 4].map((i) => (
                 <div key={i} className="space-y-3 sm:space-y-4 w-full">
