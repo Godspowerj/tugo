@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Users, Bed, Home, CheckCircle, MapPin, Calendar, MessageCircle, Star } from 'lucide-react';
 import Image from 'next/image';
@@ -145,3 +146,4 @@ const ListingCard: React.FC<ListingCardProps> = ({ listing, isSponsored = false 
 };
 
 export default ListingCard;
+

@@ -20,7 +20,7 @@ import StudentReview from '@/src/component/post/StudentReview';
 // Business Components
 import BusinessTypeSelection from '@/src/component/post/BusinessTypeSelection';
 import BusinessInfo from '@/src/component/post/BusinessInfo';
-import BusinessLocationTarget from '@/src/component/post/BusinessLocationTarget';
+import BusinessLocationTarget from "@/src/component/post/BusinessLocationTarget"
 import BusinessSpecialOffers from '@/src/component/post/BusinessSpecialOffers';
 import BusinessPackages from '@/src/component/post/BusinessPackages';
 import BusinessReview from '@/src/component/post/BusinessReview';
@@ -254,7 +254,7 @@ export default function UnifiedPostPage() {
       await new Promise(resolve => setTimeout(resolve, 2000));
 
       toast.success(isBusinessAd ? 'Business ad published! 🎉' : 'Listing published successfully! 🎉');
-      router.push('/explore');
+      router.push('/home');
     } catch (error) {
       console.error('Error:', error);
       toast.error('Failed to publish. Please try again.');
@@ -345,7 +345,7 @@ export default function UnifiedPostPage() {
               {currentStep === 3 && (
                 <BusinessLocationTarget
                   data={businessAdData}
-                  setData={(data) => setBusinessAdData({ ...businessAdData, ...data })}
+                  setData={(data: any) => setBusinessAdData({ ...businessAdData, ...data })}
                   validUniversities={VALID_UNIVERSITIES}
                 />
               )}

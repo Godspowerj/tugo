@@ -1,17 +1,13 @@
-// lib/api/profileApi.ts
-// Complete and corrected API client for profile operations
-
 import axios, { AxiosError } from 'axios';
+import { apiClient } from '../lib/axios';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
-
-// Types matching your backend
 export interface ProfileData {
   university: string;
   major: string;
   year: string;
   bio: string;
   lifestyle: string[];
+  profilePicture?: string;
 }
 
 export interface ProfileResponse {
@@ -22,6 +18,7 @@ export interface ProfileResponse {
   year: string;
   bio: string;
   lifestyles: string[];
+  profilePicture?: string;
   createdAt: string;
   updatedAt: string;
   user?: {
@@ -37,7 +34,6 @@ export interface ApiResponse<T = any> {
   errors?: Array<{ field: string; message: string }>;
 }
 
-// Constants from your backend
 export const VALID_LIFESTYLES = [
   'early-bird',
   'night-owl',
@@ -73,47 +69,7 @@ export const VALID_YEARS = [
   'Graduate'
 ] as const;
 
-// Axios instance with auth token
-const apiClient = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  timeout: 10000, // 10 second timeout
-});
-
-// Request interceptor to add auth token
-apiClient.interceptors.request.use(
-  (config) => {
-    if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('accessToken');
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
-// Response interceptor for error handling
-apiClient.interceptors.response.use(
-  (response) => response,
-  async (error: AxiosError<ApiResponse>) => {
-    if (error.response?.status === 401) {
-      // Handle token expiration
-      if (typeof window !== 'undefined') {
-        localStorage.removeItem('accessToken');
-        window.location.href = '/auth/login';
-      }
-    }
-    return Promise.reject(error);
-  }
-);
-
-// Profile API functions
 export const profileApi = {
-  // Create profile
   createProfile: async (data: ProfileData): Promise<ApiResponse<ProfileResponse>> => {
     try {
       const response = await apiClient.post('/profile', data);
@@ -122,7 +78,6 @@ export const profileApi = {
       if (axios.isAxiosError(error) && error.response) {
         return error.response.data;
       }
-      // Network or other errors
       return {
         success: false,
         message: 'Network error. Please check your connection.',
@@ -131,7 +86,6 @@ export const profileApi = {
     }
   },
 
-  // Get current user's profile
   getProfile: async (): Promise<ApiResponse<ProfileResponse>> => {
     try {
       const response = await apiClient.get('/profile');
@@ -148,7 +102,6 @@ export const profileApi = {
     }
   },
 
-  // Update profile
   updateProfile: async (data: Partial<ProfileData>): Promise<ApiResponse<ProfileResponse>> => {
     try {
       const response = await apiClient.put('/profile', data);
@@ -165,7 +118,6 @@ export const profileApi = {
     }
   },
 
-  // Delete profile
   deleteProfile: async (): Promise<ApiResponse> => {
     try {
       const response = await apiClient.delete('/profile');
@@ -183,7 +135,6 @@ export const profileApi = {
   },
 };
 
-// Helper function to get lifestyle label with emoji
 export const lifestyleLabels: Record<string, string> = {
   'early-bird': '🌅 Early Bird',
   'night-owl': '🌙 Night Owl',

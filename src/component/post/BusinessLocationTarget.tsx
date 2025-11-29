@@ -39,7 +39,6 @@ export default function BusinessLocationTarget({ data, setData, validUniversitie
                         />
                     </div>
                 </div>
-
                 <div>
                     <label className="block text-sm font-semibold text-gray-300 mb-2">
                         Target University *
@@ -74,7 +73,6 @@ export default function BusinessLocationTarget({ data, setData, validUniversitie
                         />
                     </div>
                 </div>
-
                 <div>
                     <label className="block text-sm font-semibold text-gray-300 mb-2">
                         Price Range
@@ -85,8 +83,8 @@ export default function BusinessLocationTarget({ data, setData, validUniversitie
                                 key={range}
                                 onClick={() => setData({ priceRange: range as any })}
                                 className={`px-4 py-3 rounded-xl font-bold transition-all ${data.priceRange === range
-                                        ? 'bg-white text-black'
-                                        : 'bg-white/5 border border-white/10 hover:border-white/30'
+                                    ? 'bg-white text-black'
+                                    : 'bg-white/5 border border-white/10 hover:border-white/30'
                                     }`}
                             >
                                 {range}
