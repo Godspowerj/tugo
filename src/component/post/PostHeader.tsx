@@ -14,7 +14,7 @@ export default function PostHeader({ currentStep, totalSteps, stepTitle, onBack 
 
     return (
         <header className="sticky top-0 z-10 bg-black/80 backdrop-blur-xl border-b border-white/10">
-            <div className="max-w-4xl mx-auto px-4 py-4">
+            <div className="max-w-4xl mx-auto py-4">
                 <div className="flex items-center justify-between mb-4">
                     <div>
                         <h1 className="text-2xl font-black">Create Post</h1>

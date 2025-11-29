@@ -19,7 +19,7 @@ export default function CategorySelection({ postCategory, setPostCategory }: Cat
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <button
                     onClick={() => setPostCategory('student-listing')}
-                    className={`relative p-8 rounded-2xl border-2 transition-all text-left ${postCategory === 'student-listing'
+                    className={`relative p-4 rounded-2xl border-2 transition-all text-left ${postCategory === 'student-listing'
                             ? 'bg-white text-black border-white'
                             : 'bg-white/5 border-white/10 hover:border-white/30'
                         }`}
@@ -44,7 +44,7 @@ export default function CategorySelection({ postCategory, setPostCategory }: Cat
 
                 <button
                     onClick={() => setPostCategory('business-ad')}
-                    className={`relative p-8 rounded-2xl border-2 transition-all text-left ${postCategory === 'business-ad'
+                    className={`relative p-4 rounded-2xl border-2 transition-all text-left ${postCategory === 'business-ad'
                             ? 'bg-white text-black border-white'
                             : 'bg-white/5 border-white/10 hover:border-white/30'
                         }`}
