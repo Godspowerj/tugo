@@ -51,7 +51,7 @@ const TugoExplorePage: React.FC = () => {
   const regularItems = filteredItems.filter(item => !item.isSponsored);
 
   return (
-    <MainLayout>
+    <MainLayout fullWidth={true}>
       <div className="min-h-screen bg-black text-white overflow-x-hidden font-['Plus_Jakarta_Sans',sans-serif]">
         {/* Background gradients - adjusted for mobile */}
         <div className="fixed inset-0 overflow-hidden pointer-events-none">
@@ -77,10 +77,10 @@ const TugoExplorePage: React.FC = () => {
         )}
 
         {loading ? (
-          <div className="relative z-10 w-full max-w-7xl mx-auto py-4 sm:py-6 pb-24 sm:pb-32">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
+          <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-24 sm:pb-32">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
               {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="space-y-3 sm:space-y-4 w-full">
+                <div key={i} className="space-y-4 w-full">
                   <Skeleton className="h-48 sm:h-56 md:h-64 w-full rounded-2xl" />
                   <div className="space-y-2 px-1">
                     <Skeleton className="h-4 w-3/4" />
@@ -105,8 +105,6 @@ const TugoExplorePage: React.FC = () => {
           chatInput={chatInput}
           setChatInput={setChatInput}
         />
-
-        
 
         <style jsx global>{`
           @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap');

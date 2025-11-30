@@ -133,6 +133,26 @@ export const profileApi = {
       };
     }
   },
+
+  uploadProfilePicture: async (formData: FormData): Promise<ApiResponse<{ profilePicture: string; profile: ProfileResponse }>> => {
+    try {
+      const response = await apiClient.post('/profile/upload-picture', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        return error.response.data;
+      }
+      return {
+        success: false,
+        message: 'Failed to upload profile picture',
+        errors: []
+      };
+    }
+  },
 };
 
 export const lifestyleLabels: Record<string, string> = {

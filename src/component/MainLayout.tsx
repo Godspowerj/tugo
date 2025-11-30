@@ -6,12 +6,14 @@ interface MainLayoutProps {
     children: React.ReactNode;
     showNav?: boolean;
     className?: string;
+    fullWidth?: boolean;
 }
 
 const MainLayout: React.FC<MainLayoutProps> = ({
     children,
     showNav = true,
     className = "",
+    fullWidth = false,
 }) => {
     return (
         <div className="relative min-h-screen bg-gradient-to-br from-gray-950 via-black to-gray-900 text-white overflow-x-hidden">
@@ -32,9 +34,13 @@ const MainLayout: React.FC<MainLayoutProps> = ({
                         ${className}
                     `}
                 >
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        {children}
-                    </div>
+                    {fullWidth ? (
+                        children
+                    ) : (
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            {children}
+                        </div>
+                    )}
                 </main>
 
                 {/* Bottom Navigation */}

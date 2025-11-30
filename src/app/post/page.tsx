@@ -264,7 +264,7 @@ export default function UnifiedPostPage() {
   };
 
   return (
-    <MainLayout>
+    <MainLayout fullWidth={true}>
       <PostHeader
         currentStep={currentStep}
         totalSteps={steps.length}
@@ -272,7 +272,7 @@ export default function UnifiedPostPage() {
         onBack={() => router.back()}
       />
 
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="md:p-8 min-h-[500px]">
 
           {/* Step 0: Choose Category */}

@@ -12,7 +12,7 @@ interface FeedSectionProps {
 
 const FeedSection: React.FC<FeedSectionProps> = ({ sponsoredItems, regularItems }) => {
     return (
-        <div className="relative z-10 w-full max-w-7xl mx-auto py-4 sm:py-6 pb-24 sm:pb-32">
+        <div className="relative z-10 w-full md:max-w-7xl max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 pb-24 sm:pb-32">
             {/* Sponsored section */}
             {sponsoredItems.length > 0 && (
                 <div className="mb-8 sm:mb-12">
