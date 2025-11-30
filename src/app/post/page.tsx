@@ -273,7 +273,7 @@ export default function UnifiedPostPage() {
       />
 
       <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className=" from-white/10 to-white/5 rounded-3xl p-4 md:p-8 min-h-[500px]">
+        <div className="md:p-8 min-h-[500px]">
 
           {/* Step 0: Choose Category */}
           {currentStep === 0 && (
