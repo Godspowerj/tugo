@@ -1,5 +1,6 @@
-// ...existing code...
+
 "use client";
+import { useAuth } from "@/src/context/authContext";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
@@ -7,8 +8,8 @@ import { useRouter } from "next/navigation";
 import { toast, Toaster } from "sonner";
 
 const Login = () => {
-  const [showPassword, setShowPassword] = useState(true);
-  const [acceptCookies, setAcceptCookies] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [acceptCookies, setAcceptCookies] = useState(true);
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -44,52 +45,25 @@ const Login = () => {
     });
   };
 
-  // ...existing code...
+  const { login } = useAuth();
+
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const validation = validate();
-    console.log("Client validation result:", validation); // debug
     setErrors(validation);
-    if (Object.keys(validation).length > 0) return; // client prevented submit
+    if (Object.keys(validation).length > 0) return;
 
     setLoading(true);
     try {
-      console.log("Sending login request...", { ...formData, acceptCookies });
-      const response = await fetch("https://tugobackend.onrender.com/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ ...formData, acceptCookies }),
-      });
-
-      const data = await response.json();
-      console.log("Login response:", data);
-      setLoading(false);
-      toast.success("Login successful. Redirecting...");
-
-      if (data.success) {
-        localStorage.setItem("accessToken", data.accessToken);
-        router.push("/home");
-      } else {
-        toast.error(data.message || "Login failed");
-        if (data.errors) {
-          const serverErrors: Record<string, string> = {};
-          (data.errors as any[]).forEach((err) => {
-            serverErrors[err.field || "general"] =
-              err.message || JSON.stringify(err);
-          });
-          setErrors(serverErrors);
-        } else {
-          setErrors({ general: data.message || "Login failed" });
-        }
-      }
-    } catch (err) {
-      setLoading(false);
-      setErrors({ general: "Network error. Please try again." });
+      await login(formData.email, formData.password, acceptCookies)
+      router.push("/home");
+    } catch (err: any) {
       console.error("Login exception:", err);
+    } finally {
+      setLoading(false);
     }
   };
-  // ...existing code...
+
 
   return (
     <>
@@ -167,9 +141,8 @@ const Login = () => {
             <button
               onClick={handleSubmit}
               disabled={loading}
-              className={`w-full py-4 bg-white text-black rounded-full font-bold hover:bg-gray-100 transition-all transform hover:scale-105 active:scale-95 ${
-                loading ? "opacity-70 cursor-not-allowed" : ""
-              }`}
+              className={`w-full py-4 bg-white text-black rounded-full font-bold hover:bg-gray-100 transition-all transform hover:scale-105 active:scale-95 ${loading ? "opacity-70 cursor-not-allowed" : ""
+                }`}
             >
               {loading ? "Signing in..." : "Sign In"}
             </button>
@@ -192,19 +165,6 @@ const Login = () => {
               </Link>
             </div>
           </div>
-        </div>
-
-        <div className="flex items-center gap-2 mt-4">
-          <input
-            type="checkbox"
-            id="acceptCookies"
-            checked={acceptCookies}
-            onChange={() => setAcceptCookies(!acceptCookies)}
-            className="accent-white"
-          />
-          <label htmlFor="acceptCookies" className="text-gray-400 text-sm">
-            I accept cookies to stay logged in
-          </label>
         </div>
       </div>
     </>

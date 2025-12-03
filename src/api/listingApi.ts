@@ -1,3 +1,5 @@
+import { apiClient } from '@/src/lib/axios';
+
 export interface ListingResponse {
   id: string;
   type: 'listing';
@@ -25,13 +27,11 @@ export interface CreateListingInput {
   priceType: 'monthly' | 'weekly' | 'daily';
   university: string;
   location: string;
-  propertyImage: string;
   availableFrom: string;
+  phoneNumber: string;
+  images: string[]; // Cloudinary URLs
   isSponsored?: boolean;
-  posterName: string;
-  posterImage: string;
-  posterPhone: string;
-  posterVerified?: boolean;
+  sponsorshipPackage?: string;
 }
 
 interface ApiResponse<T> {
@@ -39,8 +39,6 @@ interface ApiResponse<T> {
   error?: string;
   success?: boolean;
 }
-
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
 export const listingApi = {
   async getListings(filters?: {
@@ -54,33 +52,21 @@ export const listingApi = {
       if (filters?.university) params.append('university', filters.university);
       if (filters?.search) params.append('search', filters.search);
 
-      const response = await fetch(`${API_BASE}/api/listings?${params.toString()}`);
-      const json = await response.json();
-
-      if (!response.ok) {
-        return { error: json.error || 'Failed to fetch listings' };
-      }
-
-      return { data: json.data };
-    } catch (error) {
+      const response = await apiClient.get(`/listings?${params.toString()}`);
+      return { data: response.data.data };
+    } catch (error: any) {
       console.error('Listing API error:', error);
-      return { error: 'Network error. Please try again.' };
+      return { error: error.response?.data?.message || 'Failed to fetch listings' };
     }
   },
 
   async getListingById(id: string): Promise<ApiResponse<ListingResponse>> {
     try {
-      const response = await fetch(`${API_BASE}/api/listings/${id}`);
-      const json = await response.json();
-
-      if (!response.ok) {
-        return { error: json.error || 'Failed to fetch listing' };
-      }
-
-      return { data: json.data };
-    } catch (error) {
+      const response = await apiClient.get(`/listings/${id}`);
+      return { data: response.data.data };
+    } catch (error: any) {
       console.error('Listing API error:', error);
-      return { error: 'Network error. Please try again.' };
+      return { error: error.response?.data?.message || 'Failed to fetch listing' };
     }
   },
 
@@ -88,27 +74,11 @@ export const listingApi = {
     input: CreateListingInput
   ): Promise<ApiResponse<ListingResponse>> {
     try {
-      const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-
-      const response = await fetch(`${API_BASE}/api/listings`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(token && { Authorization: `Bearer ${token}` }),
-        },
-        body: JSON.stringify(input),
-      });
-
-      const json = await response.json();
-
-      if (!response.ok) {
-        return { error: json.error || 'Failed to create listing' };
-      }
-
-      return { data: json.data };
-    } catch (error) {
+      const response = await apiClient.post('/listings', input);
+      return { data: response.data.data, success: true };
+    } catch (error: any) {
       console.error('Listing API error:', error);
-      return { error: 'Network error. Please try again.' };
+      return { error: error.response?.data?.message || 'Failed to create listing' };
     }
   },
 
@@ -117,61 +87,29 @@ export const listingApi = {
     input: Partial<CreateListingInput>
   ): Promise<ApiResponse<ListingResponse>> {
     try {
-      const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-
-      const response = await fetch(`${API_BASE}/api/listings/${id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(token && { Authorization: `Bearer ${token}` }),
-        },
-        body: JSON.stringify(input),
-      });
-
-      const json = await response.json();
-
-      if (!response.ok) {
-        return { error: json.error || 'Failed to update listing' };
-      }
-
-      return { data: json.data };
-    } catch (error) {
+      const response = await apiClient.patch(`/listings/${id}`, input);
+      return { data: response.data.data, success: true };
+    } catch (error: any) {
       console.error('Listing API error:', error);
-      return { error: 'Network error. Please try again.' };
+      return { error: error.response?.data?.message || 'Failed to update listing' };
     }
   },
 
   async deleteListing(id: string): Promise<ApiResponse<void>> {
     try {
-      const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-
-      const response = await fetch(`${API_BASE}/api/listings/${id}`, {
-        method: 'DELETE',
-        headers: {
-          ...(token && { Authorization: `Bearer ${token}` }),
-        },
-      });
-
-      const json = await response.json();
-
-      if (!response.ok) {
-        return { error: json.error || 'Failed to delete listing' };
-      }
-
-      return { data: undefined };
-    } catch (error) {
+      await apiClient.delete(`/listings/${id}`);
+      return { data: undefined, success: true };
+    } catch (error: any) {
       console.error('Listing API error:', error);
-      return { error: 'Network error. Please try again.' };
+      return { error: error.response?.data?.message || 'Failed to delete listing' };
     }
   },
 
   async incrementContacts(id: string): Promise<ApiResponse<void>> {
     try {
-      await fetch(`${API_BASE}/api/listings/${id}/increment-contacts`, {
-        method: 'POST',
-      });
+      await apiClient.post(`/listings/${id}/increment-contacts`);
       return { data: undefined };
-    } catch (error) {
+    } catch (error: any) {
       console.error('Listing API error:', error);
       return { error: 'Failed to increment contacts' };
     }
@@ -179,13 +117,21 @@ export const listingApi = {
 
   async incrementViews(id: string): Promise<ApiResponse<void>> {
     try {
-      await fetch(`${API_BASE}/api/listings/${id}/increment-views`, {
-        method: 'POST',
-      });
+      await apiClient.post(`/listings/${id}/increment-views`);
       return { data: undefined };
-    } catch (error) {
+    } catch (error: any) {
       console.error('Listing API error:', error);
       return { error: 'Failed to increment views' };
+    }
+  },
+
+  async getMyListings(): Promise<ApiResponse<{ listings: ListingResponse[]; count: number }>> {
+    try {
+      const response = await apiClient.get('/listings/my-listings');
+      return { data: response.data.data, success: true };
+    } catch (error: any) {
+      console.error('Listing API error:', error);
+      return { error: error.response?.data?.message || 'Failed to fetch my listings' };
     }
   },
 };

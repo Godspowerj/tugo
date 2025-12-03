@@ -1,25 +1,30 @@
 import React from 'react';
 import { X, ImageIcon, Phone } from 'lucide-react';
+import { usePost } from '@/src/context/PostContext';
 
-interface MediaContactProps {
-    images: File[];
-    phoneNumber: string;
-    setPhoneNumber: (phone: string) => void;
-    handleImageUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    removeImage: (index: number) => void;
-    imagePreviews: string[];
-    isStudentListing: boolean;
-}
+export default function MediaContact() {
+    const {
+        studentListingData,
+        businessAdData,
+        updateStudentListing,
+        updateBusinessAd,
+        imagePreviews,
+        handleImageUpload,
+        removeImage,
+        isStudentListing
+    } = usePost();
 
-export default function MediaContact({
-    images,
-    phoneNumber,
-    setPhoneNumber,
-    handleImageUpload,
-    removeImage,
-    imagePreviews,
-    isStudentListing
-}: MediaContactProps) {
+    const images = isStudentListing ? studentListingData.images : businessAdData.images;
+    const phoneNumber = isStudentListing ? studentListingData.phoneNumber : businessAdData.phoneNumber;
+
+    const setPhoneNumber = (phone: string) => {
+        if (isStudentListing) {
+            updateStudentListing({ phoneNumber: phone });
+        } else {
+            updateBusinessAd({ phoneNumber: phone });
+        }
+    };
+
     return (
         <div className="space-y-6 animate-fade-in">
             <div className="text-center mb-8">

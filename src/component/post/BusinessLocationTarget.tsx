@@ -1,21 +1,21 @@
 import React from 'react';
 import { MapPin, ExternalLink, Star } from 'lucide-react';
+import { usePost } from '@/src/context/PostContext';
 
-interface BusinessAdData {
-    location: string;
-    targetUniversity: string;
-    website: string;
-    priceRange: '₦' | '₦₦' | '₦₦₦';
-    ctaText: string;
-}
+const VALID_UNIVERSITIES = [
+    'All Universities',
+    'University of Lagos',
+    'University of Ibadan',
+    'Obafemi Awolowo University',
+    'University of Nigeria',
+    'Covenant University',
+    'Ahmadu Bello University',
+    'Lagos State University',
+];
 
-interface BusinessLocationTargetProps {
-    data: BusinessAdData;
-    setData: (data: Partial<BusinessAdData>) => void;
-    validUniversities: string[];
-}
+export default function BusinessLocationTarget() {
+    const { businessAdData, updateBusinessAd } = usePost();
 
-export default function BusinessLocationTarget({ data, setData, validUniversities }: BusinessLocationTargetProps) {
     return (
         <div className="space-y-6 animate-fade-in">
             <div className="text-center mb-8">
@@ -32,8 +32,8 @@ export default function BusinessLocationTarget({ data, setData, validUniversitie
                         <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                         <input
                             type="text"
-                            value={data.location}
-                            onChange={(e) => setData({ location: e.target.value })}
+                            value={businessAdData.location}
+                            onChange={(e) => updateBusinessAd({ location: e.target.value })}
                             placeholder="e.g., Yaba, Lagos"
                             className="w-full pl-12 pr-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 outline-none focus:border-white/30 transition-all"
                         />
@@ -44,12 +44,12 @@ export default function BusinessLocationTarget({ data, setData, validUniversitie
                         Target University *
                     </label>
                     <select
-                        value={data.targetUniversity}
-                        onChange={(e) => setData({ targetUniversity: e.target.value })}
+                        value={businessAdData.targetUniversity}
+                        onChange={(e) => updateBusinessAd({ targetUniversity: e.target.value })}
                         className="w-full px-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-white outline-none focus:border-white/30 transition-all appearance-none"
                     >
                         <option value="" className="bg-black">Select target audience</option>
-                        {validUniversities.map(uni => (
+                        {VALID_UNIVERSITIES.map(uni => (
                             <option key={uni} value={uni} className="bg-black">{uni}</option>
                         ))}
                     </select>
@@ -66,8 +66,8 @@ export default function BusinessLocationTarget({ data, setData, validUniversitie
                         <ExternalLink className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                         <input
                             type="url"
-                            value={data.website}
-                            onChange={(e) => setData({ website: e.target.value })}
+                            value={businessAdData.website}
+                            onChange={(e) => updateBusinessAd({ website: e.target.value })}
                             placeholder="https://yourwebsite.com"
                             className="w-full pl-12 pr-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 outline-none focus:border-white/30 transition-all"
                         />
@@ -81,8 +81,8 @@ export default function BusinessLocationTarget({ data, setData, validUniversitie
                         {['₦', '₦₦', '₦₦₦'].map((range) => (
                             <button
                                 key={range}
-                                onClick={() => setData({ priceRange: range as any })}
-                                className={`px-4 py-3 rounded-xl font-bold transition-all ${data.priceRange === range
+                                onClick={() => updateBusinessAd({ priceRange: range as any })}
+                                className={`px-4 py-3 rounded-xl font-bold transition-all ${businessAdData.priceRange === range
                                     ? 'bg-white text-black'
                                     : 'bg-white/5 border border-white/10 hover:border-white/30'
                                     }`}
@@ -101,8 +101,8 @@ export default function BusinessLocationTarget({ data, setData, validUniversitie
                         Call-to-Action Text
                     </label>
                     <select
-                        value={data.ctaText}
-                        onChange={(e) => setData({ ctaText: e.target.value })}
+                        value={businessAdData.ctaText}
+                        onChange={(e) => updateBusinessAd({ ctaText: e.target.value })}
                         className="w-full px-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-white outline-none focus:border-white/30 transition-all appearance-none"
                     >
                         <option value="Order Now" className="bg-black">Order Now</option>

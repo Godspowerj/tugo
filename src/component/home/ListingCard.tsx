@@ -2,6 +2,7 @@
 import React from 'react';
 import { Users, Bed, Home, CheckCircle, MapPin, Calendar, MessageCircle, Star } from 'lucide-react';
 import Image from 'next/image';
+import { profile } from 'console';
 
 export interface Listing {
     id: string;
@@ -37,39 +38,59 @@ const getTypeIcon = (type: string) => {
 };
 
 const openWhatsApp = (phone: string, title: string) => {
+    // Validate phone number exists
+    if (!phone) {
+        alert('Phone number not available for this listing');
+        return;
+    }
     const message = encodeURIComponent(`Hi! I'm interested in your listing: ${title}`);
     window.open(`https://wa.me/${phone.replace(/\+/g, '')}?text=${message}`, '_blank');
 };
 
 const ListingCard: React.FC<ListingCardProps> = ({ listing, isSponsored = false }) => {
     return (
-        <div className={`w-full rounded-2xl sm:rounded-3xl overflow-hidden transition-all duration-300 backdrop-blur-sm group ${
-            isSponsored
+        <div className={`w-full rounded-2xl sm:rounded-3xl overflow-hidden transition-all duration-300 backdrop-blur-sm group ${isSponsored
                 ? 'bg-gradient-to-br from-white/15 to-white/5 border border-white/20'
                 : 'bg-gradient-to-b from-white/10 to-white/5 border border-white/20 hover:border-white/40'
-        }`}>
+            }`}>
             {/* Image section */}
             <div className="relative h-64 sm:h-72 md:h-80 lg:h-96 overflow-hidden">
-                <Image
-                    src={listing.propertyImage}
-                    alt={listing.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-700"
-                    sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                    priority={isSponsored}
-                />
+                {listing.propertyImage && (
+                    <Image
+                        src={listing.propertyImage}
+                        alt={`${listing.title} - ${listing.listingType} listing`}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-700"
+                        sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                        priority={isSponsored}
+                    />
+                )}
+                {!listing.propertyImage && (
+                    <div className="w-full h-full bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center">
+                        <Home className="w-16 h-16 text-gray-500" />
+                    </div>
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
 
                 {/* Bottom overlay with poster info */}
                 <div className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4 flex items-center justify-between gap-2">
                     <div className="flex items-center gap-2 sm:gap-3 min-w-0">
                         <div className="relative w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0">
-                            <Image
-                                src={listing.posterImage}
-                                alt={listing.posterName}
-                                fill
-                                className="rounded-full border-2 border-white/80 object-cover"
-                            />
+                            {listing.posterImage && (
+                                <Image
+                                    src={listing.posterImage}
+                                    alt={`${listing.posterName}'s profile picture`}
+                                    fill
+                                    className="rounded-full border-2 border-white/80 object-cover"
+                                />
+                            )}
+                            {!listing.posterImage && (
+                                <div className="w-full h-full rounded-full border-2 border-white/80 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                                    <span className="text-white font-bold text-sm sm:text-base">
+                                        {listing.posterName.charAt(0).toUpperCase()}
+                                    </span>
+                                </div>
+                            )}
                             {listing.posterVerified && (
                                 <div className="absolute -bottom-0.5 -right-0.5 sm:-bottom-1 sm:-right-1 bg-blue-500 rounded-full p-0.5 z-10">
                                     <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 text-white fill-current" />

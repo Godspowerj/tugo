@@ -1,11 +1,12 @@
 import React from 'react';
-import { UtensilsCrossed, Scissors, ShoppingBag, Star, MapPin, ExternalLink } from 'lucide-react';
+import { UtensilsCrossed, Scissors, ShoppingBag, Star, MapPin, ExternalLink, Shirt, Store } from 'lucide-react';
 import Image from 'next/image';
 
 export interface BusinessAd {
     id: string;
     type: 'business';
-    businessType: 'eatery' | 'barber' | 'service';
+    // All 5 business types supported by the backend
+    businessType: 'eatery' | 'barber' | 'laundry' | 'store' | 'service';
     title: string;
     description: string;
     image: string;
@@ -24,12 +25,24 @@ interface BusinessAdCardProps {
     isCompact?: boolean;
 }
 
+/**
+ * Returns the appropriate icon for each business type
+ * This makes it easy to visually identify different business categories
+ */
 const getBusinessIcon = (type: string) => {
     switch (type) {
-        case 'eatery': return <UtensilsCrossed className="w-5 h-5" />;
-        case 'barber': return <Scissors className="w-5 h-5" />;
-        case 'service': return <ShoppingBag className="w-5 h-5" />;
-        default: return <ShoppingBag className="w-5 h-5" />;
+        case 'eatery':  // Restaurants, cafes, food vendors
+            return <UtensilsCrossed className="w-5 h-5" />;
+        case 'barber':  // Barbershops, salons
+            return <Scissors className="w-5 h-5" />;
+        case 'laundry': // Laundry and dry cleaning services
+            return <Shirt className="w-5 h-5" />;
+        case 'store':   // Retail stores, shops
+            return <Store className="w-5 h-5" />;
+        case 'service': // General services
+            return <ShoppingBag className="w-5 h-5" />;
+        default:        // Fallback icon
+            return <ShoppingBag className="w-5 h-5" />;
     }
 };
 
@@ -41,13 +54,20 @@ const BusinessAdCard: React.FC<BusinessAdCardProps> = ({ ad, isSponsored = false
                 : 'bg-gradient-to-br from-white/12 to-white/5 border border-white/20 hover:border-white/40'
             }`}>
             <div className={`relative ${isCompact ? 'h-48' : 'h-64 md:h-80'} overflow-hidden`}>
-                <Image
-                    src={ad.image}
-                    alt={ad.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-700"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                />
+                {ad.image && (
+                    <Image
+                        src={ad.image}
+                        alt={`${ad.title} - ${ad.businessType} business`}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-700"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                )}
+                {!ad.image && (
+                    <div className="w-full h-full bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center">
+                        <Store className="w-16 h-16 text-gray-500" />
+                    </div>
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
 
                 <div className="absolute top-4 left-4 flex items-center gap-2 bg-white/95 backdrop-blur-sm px-3 py-2 rounded-full z-10">

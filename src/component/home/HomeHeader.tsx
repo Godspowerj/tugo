@@ -1,19 +1,10 @@
 import React from 'react';
 import { Search, SlidersHorizontal } from 'lucide-react';
+import { useHome } from '@/src/context/HomeContext';
 
-interface HomeHeaderProps {
-    searchQuery: string;
-    setSearchQuery: (query: string) => void;
-    showFilters: boolean;
-    setShowFilters: (show: boolean) => void;
-}
+const HomeHeader: React.FC = () => {
+    const { searchQuery, setSearchQuery, showFilters, setShowFilters } = useHome();
 
-const HomeHeader: React.FC<HomeHeaderProps> = ({
-    searchQuery,
-    setSearchQuery,
-    showFilters,
-    setShowFilters,
-}) => {
     return (
         <div className="relative z-10 bg-black/80 backdrop-blur-xl border-b border-white/10 sticky top-0">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">

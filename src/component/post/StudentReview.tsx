@@ -1,17 +1,6 @@
 import React from 'react';
 import { Users, Bed, Home, MapPin, Phone, Star } from 'lucide-react';
-
-interface StudentListingData {
-    listingType: 'roommate' | 'bunkmate' | 'rental' | '';
-    title: string;
-    description: string;
-    price: string;
-    priceType: 'monthly' | 'weekly' | 'daily';
-    university: string;
-    location: string;
-    availableFrom: string;
-    phoneNumber: string;
-}
+import { usePost } from '@/src/context/PostContext';
 
 interface Package {
     id: string;
@@ -21,13 +10,12 @@ interface Package {
 }
 
 interface StudentReviewProps {
-    data: StudentListingData;
-    imagePreviews: string[];
-    selectedPackage: string;
     packages: Package[];
 }
 
-export default function StudentReview({ data, imagePreviews, selectedPackage, packages }: StudentReviewProps) {
+export default function StudentReview({ packages }: StudentReviewProps) {
+    const { studentListingData, imagePreviews, selectedPackage } = usePost();
+
     return (
         <div className="space-y-6 animate-fade-in">
             <div className="text-center mb-8">
@@ -48,9 +36,9 @@ export default function StudentReview({ data, imagePreviews, selectedPackage, pa
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
                             <div className="absolute bottom-4 left-4 right-4">
                                 <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold bg-white/90 text-black mb-2">
-                                    {data.listingType === 'roommate' && <><Users className="w-4 h-4" /> Roommate</>}
-                                    {data.listingType === 'bunkmate' && <><Bed className="w-4 h-4" /> Bunkmate</>}
-                                    {data.listingType === 'rental' && <><Home className="w-4 h-4" /> Rental</>}
+                                    {studentListingData.listingType === 'roommate' && <><Users className="w-4 h-4" /> Roommate</>}
+                                    {studentListingData.listingType === 'bunkmate' && <><Bed className="w-4 h-4" /> Bunkmate</>}
+                                    {studentListingData.listingType === 'rental' && <><Home className="w-4 h-4" /> Rental</>}
                                 </span>
                             </div>
                         </div>
@@ -58,28 +46,28 @@ export default function StudentReview({ data, imagePreviews, selectedPackage, pa
 
                     <div className="p-6 space-y-4">
                         <div className="flex items-start justify-between gap-3">
-                            <h3 className="text-xl font-bold text-white flex-1">{data.title}</h3>
+                            <h3 className="text-xl font-bold text-white flex-1">{studentListingData.title}</h3>
                             <div className="text-right">
-                                <span className="text-2xl font-black text-white">₦{parseInt(data.price || '0').toLocaleString()}</span>
-                                <div className="text-sm text-gray-400">per {data.priceType}</div>
+                                <span className="text-2xl font-black text-white">₦{parseInt(studentListingData.price || '0').toLocaleString()}</span>
+                                <div className="text-sm text-gray-400">per {studentListingData.priceType}</div>
                             </div>
                         </div>
 
-                        <p className="text-gray-400 line-clamp-3">{data.description}</p>
+                        <p className="text-gray-400 line-clamp-3">{studentListingData.description}</p>
 
                         <div className="space-y-2 text-sm">
                             <div className="flex items-center text-gray-400">
                                 <Home className="w-4 h-4 mr-2" />
-                                {data.university}
+                                {studentListingData.university}
                             </div>
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center text-gray-400">
                                     <MapPin className="w-4 h-4 mr-2" />
-                                    {data.location}
+                                    {studentListingData.location}
                                 </div>
                                 <div className="flex items-center text-gray-400">
                                     <Phone className="w-4 h-4 mr-2" />
-                                    {data.phoneNumber}
+                                    {studentListingData.phoneNumber}
                                 </div>
                             </div>
                         </div>
@@ -102,9 +90,9 @@ export default function StudentReview({ data, imagePreviews, selectedPackage, pa
                     <div className="bg-white/5 border border-white/10 rounded-xl p-4">
                         <h4 className="font-bold text-white mb-2">Listing Details</h4>
                         <ul className="space-y-1 text-sm text-gray-400">
-                            <li>✓ Type: {data.listingType}</li>
-                            <li>✓ University: {data.university}</li>
-                            <li>✓ Available: {new Date(data.availableFrom).toLocaleDateString()}</li>
+                            <li>✓ Type: {studentListingData.listingType}</li>
+                            <li>✓ University: {studentListingData.university}</li>
+                            <li>✓ Available: {new Date(studentListingData.availableFrom).toLocaleDateString()}</li>
                             <li>✓ Photos: {imagePreviews.length}</li>
                         </ul>
                     </div>

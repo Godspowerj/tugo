@@ -1,21 +1,21 @@
 import React from 'react';
 import { Users, Bed, Home, ChevronDown } from 'lucide-react';
+import { useHome } from '@/src/context/HomeContext';
 
-interface HomeFiltersProps {
-    selectedType: string;
-    setSelectedType: (type: string) => void;
-    selectedUniversity: string;
-    setSelectedUniversity: (uni: string) => void;
-    universities: string[];
-}
+const UNIVERSITIES = [
+    'All Universities',
+    'University of Lagos',
+    'University of Ibadan',
+    'Obafemi Awolowo University',
+    'University of Nigeria',
+    'Covenant University',
+    'Ahmadu Bello University',
+    'Lagos State University',
+];
 
-const HomeFilters: React.FC<HomeFiltersProps> = ({
-    selectedType,
-    setSelectedType,
-    selectedUniversity,
-    setSelectedUniversity,
-    universities,
-}) => {
+const HomeFilters: React.FC = () => {
+    const { selectedType, setSelectedType, selectedUniversity, setSelectedUniversity } = useHome();
+
     return (
         <div className="w-full max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 pb-4">
             <div className="mt-4 space-y-3 sm:space-y-4 animate-fade-in">
@@ -23,49 +23,45 @@ const HomeFilters: React.FC<HomeFiltersProps> = ({
                 <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide -mx-3 px-3 sm:mx-0 sm:px-0">
                     <button
                         onClick={() => setSelectedType('all')}
-                        className={`px-4 py-2.5 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap transition-all flex-shrink-0 ${
-                            selectedType === 'all'
+                        className={`px-4 py-2.5 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap transition-all flex-shrink-0 ${selectedType === 'all'
                                 ? 'bg-white text-black'
                                 : 'bg-white/10 text-white border border-white/20 hover:bg-white/20'
-                        }`}
+                            }`}
                     >
                         All
                     </button>
                     <button
                         onClick={() => setSelectedType('roommate')}
-                        className={`px-4 py-2.5 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap transition-all flex items-center gap-1.5 flex-shrink-0 ${
-                            selectedType === 'roommate'
+                        className={`px-4 py-2.5 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap transition-all flex items-center gap-1.5 flex-shrink-0 ${selectedType === 'roommate'
                                 ? 'bg-white text-black'
                                 : 'bg-white/10 text-white border border-white/20 hover:bg-white/20'
-                        }`}
+                            }`}
                     >
                         <Users className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                         Roommates
                     </button>
                     <button
                         onClick={() => setSelectedType('bunkmate')}
-                        className={`px-4 py-2.5 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap transition-all flex items-center gap-1.5 flex-shrink-0 ${
-                            selectedType === 'bunkmate'
+                        className={`px-4 py-2.5 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap transition-all flex items-center gap-1.5 flex-shrink-0 ${selectedType === 'bunkmate'
                                 ? 'bg-white text-black'
                                 : 'bg-white/10 text-white border border-white/20 hover:bg-white/20'
-                        }`}
+                            }`}
                     >
                         <Bed className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                         Bunkmates
                     </button>
                     <button
                         onClick={() => setSelectedType('rental')}
-                        className={`px-4 py-2.5 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap transition-all flex items-center gap-1.5 flex-shrink-0 ${
-                            selectedType === 'rental'
+                        className={`px-4 py-2.5 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap transition-all flex items-center gap-1.5 flex-shrink-0 ${selectedType === 'rental'
                                 ? 'bg-white text-black'
                                 : 'bg-white/10 text-white border border-white/20 hover:bg-white/20'
-                        }`}
+                            }`}
                     >
                         <Home className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                         Rentals
                     </button>
                 </div>
-                
+
                 {/* University dropdown */}
                 <div className="relative w-full">
                     <select
@@ -73,7 +69,7 @@ const HomeFilters: React.FC<HomeFiltersProps> = ({
                         onChange={(e) => setSelectedUniversity(e.target.value)}
                         className="w-full p-3 bg-white/10 border border-white/20 rounded-xl text-white text-sm sm:text-base focus:outline-none focus:border-white/40 appearance-none pr-10"
                     >
-                        {universities.map(uni => (
+                        {UNIVERSITIES.map(uni => (
                             <option key={uni} value={uni} className="bg-black">{uni}</option>
                         ))}
                     </select>

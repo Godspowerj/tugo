@@ -1,14 +1,10 @@
 import React from 'react';
 import { Home, Store, AlertCircle } from 'lucide-react';
+import { usePost } from '@/src/context/PostContext';
 
-type PostCategory = 'student-listing' | 'business-ad';
+export default function CategorySelection() {
+    const { postCategory, setPostCategory } = usePost();
 
-interface CategorySelectionProps {
-    postCategory: PostCategory | '';
-    setPostCategory: (category: PostCategory) => void;
-}
-
-export default function CategorySelection({ postCategory, setPostCategory }: CategorySelectionProps) {
     return (
         <div className="space-y-6 animate-fade-in">
             <div className="text-center mb-8">
@@ -20,8 +16,8 @@ export default function CategorySelection({ postCategory, setPostCategory }: Cat
                 <button
                     onClick={() => setPostCategory('student-listing')}
                     className={`relative p-4 rounded-2xl border-2 transition-all text-left ${postCategory === 'student-listing'
-                            ? 'bg-white text-black border-white'
-                            : 'bg-white/5 border-white/10 hover:border-white/30'
+                        ? 'bg-white text-black border-white'
+                        : 'bg-white/5 border-white/10 hover:border-white/30'
                         }`}
                 >
                     <div className="absolute top-4 right-4">
@@ -45,8 +41,8 @@ export default function CategorySelection({ postCategory, setPostCategory }: Cat
                 <button
                     onClick={() => setPostCategory('business-ad')}
                     className={`relative p-4 rounded-2xl border-2 transition-all text-left ${postCategory === 'business-ad'
-                            ? 'bg-white text-black border-white'
-                            : 'bg-white/5 border-white/10 hover:border-white/30'
+                        ? 'bg-white text-black border-white'
+                        : 'bg-white/5 border-white/10 hover:border-white/30'
                         }`}
                 >
                     <div className="absolute top-4 right-4 bg-gradient-to-br from-purple-500 to-blue-500 rounded-full p-2">

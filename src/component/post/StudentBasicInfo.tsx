@@ -1,14 +1,10 @@
 import React from 'react';
 import { AlertCircle } from 'lucide-react';
+import { usePost } from '@/src/context/PostContext';
 
-interface StudentBasicInfoProps {
-    title: string;
-    setTitle: (title: string) => void;
-    description: string;
-    setDescription: (desc: string) => void;
-}
+export default function StudentBasicInfo() {
+    const { studentListingData, updateStudentListing } = usePost();
 
-export default function StudentBasicInfo({ title, setTitle, description, setDescription }: StudentBasicInfoProps) {
     return (
         <div className="space-y-6 animate-fade-in">
             <div className="text-center mb-8">
@@ -23,14 +19,14 @@ export default function StudentBasicInfo({ title, setTitle, description, setDesc
                     </label>
                     <input
                         type="text"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
+                        value={studentListingData.title}
+                        onChange={(e) => updateStudentListing({ title: e.target.value })}
                         placeholder="e.g., Clean Roommate Needed Near Campus"
                         maxLength={100}
                         className="w-full px-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 outline-none focus:border-white/30 transition-all"
                     />
                     <p className="text-xs text-gray-500 mt-1">
-                        {title.length}/100 characters (min 10)
+                        {studentListingData.title.length}/100 characters (min 10)
                     </p>
                 </div>
 
@@ -39,15 +35,15 @@ export default function StudentBasicInfo({ title, setTitle, description, setDesc
                         Description *
                     </label>
                     <textarea
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
+                        value={studentListingData.description}
+                        onChange={(e) => updateStudentListing({ description: e.target.value })}
                         placeholder="Describe your space, what you're looking for, amenities, rules, etc..."
                         rows={8}
                         maxLength={1000}
                         className="w-full px-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 outline-none focus:border-white/30 transition-all resize-none"
                     />
                     <p className="text-xs text-gray-500 mt-1">
-                        {description.length}/1000 characters (min 50)
+                        {studentListingData.description.length}/1000 characters (min 50)
                     </p>
                 </div>
 

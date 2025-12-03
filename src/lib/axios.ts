@@ -1,6 +1,6 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://tugobackend.onrender.com/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
 // Create a custom interface for the config to include the _retry flag
 interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
@@ -12,7 +12,7 @@ export const apiClient = axios.create({
     headers: {
         'Content-Type': 'application/json',
     },
-    timeout: 10000,
+    timeout: 30000, // Increased to 30s for image uploads
     withCredentials: true, // Important for sending cookies (refresh token)
 });
 
@@ -22,7 +22,10 @@ apiClient.interceptors.request.use(
         if (typeof window !== 'undefined') {
             const token = localStorage.getItem('accessToken');
             if (token) {
+                console.log('Axios Request Interceptor - Attaching token to:', config.url);
                 config.headers.Authorization = `Bearer ${token}`;
+            } else {
+                console.log('Axios Request Interceptor - No token found in localStorage for:', config.url);
             }
         }
         return config;
@@ -31,8 +34,7 @@ apiClient.interceptors.request.use(
 );
 
 // Response interceptor to handle 401 errors and refresh token
-apiClient.interceptors.response.use(
-    (response) => response,
+apiClient.interceptors.response.use((response) => response,
     async (error: AxiosError) => {
         const originalRequest = error.config as CustomAxiosRequestConfig;
 
@@ -41,6 +43,7 @@ apiClient.interceptors.response.use(
             originalRequest._retry = true;
 
             try {
+                console.log('Axios Interceptor - Attempting token refresh');
                 // Attempt to refresh the token
                 // We use a separate axios instance or fetch to avoid infinite loops if this fails
                 // But using the same instance is fine if we are careful, or better, use fetch for the refresh call
@@ -52,6 +55,7 @@ apiClient.interceptors.response.use(
                     {},
                     { withCredentials: true }
                 );
+                console.log('Axios Interceptor - Refresh successful', response.data);
 
                 const { accessToken } = response.data;
 
@@ -72,9 +76,9 @@ apiClient.interceptors.response.use(
                     // Retry the original request
                     return apiClient(originalRequest);
                 }
-            } catch (refreshError) {
+            } catch (refreshError: any) {
                 // If refresh fails (e.g., refresh token expired or invalid)
-                console.error('Token refresh failed:', refreshError);
+                console.error('Token refresh failed:', refreshError.response?.data || refreshError.message);
 
                 // Clear local storage and redirect to login
                 if (typeof window !== 'undefined') {

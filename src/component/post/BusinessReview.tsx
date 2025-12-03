@@ -1,19 +1,6 @@
 import React from 'react';
 import { UtensilsCrossed, Scissors, ShoppingBag, Store, Briefcase, MapPin, Home, Phone, ExternalLink, Star, AlertCircle } from 'lucide-react';
-
-interface BusinessAdData {
-    businessType: 'eatery' | 'barber' | 'laundry' | 'store' | 'service' | '';
-    businessName: string;
-    description: string;
-    location: string;
-    targetUniversity: string;
-    phoneNumber: string;
-    website: string;
-    priceRange: '₦' | '₦₦' | '₦₦₦';
-    ctaText: string;
-    hasDiscount: boolean;
-    discountDetails: string;
-}
+import { usePost } from '@/src/context/PostContext';
 
 interface Package {
     id: string;
@@ -23,13 +10,12 @@ interface Package {
 }
 
 interface BusinessReviewProps {
-    data: BusinessAdData;
-    imagePreviews: string[];
-    selectedPackage: string;
     packages: Package[];
 }
 
-export default function BusinessReview({ data, imagePreviews, selectedPackage, packages }: BusinessReviewProps) {
+export default function BusinessReview({ packages }: BusinessReviewProps) {
+    const { businessAdData, imagePreviews, selectedPackage } = usePost();
+
     return (
         <div className="space-y-6 animate-fade-in">
             <div className="text-center mb-8">
@@ -50,48 +36,48 @@ export default function BusinessReview({ data, imagePreviews, selectedPackage, p
                             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
 
                             <div className="absolute top-4 left-4 flex items-center gap-2 bg-white/95 backdrop-blur-sm px-3 py-2 rounded-full">
-                                {data.businessType === 'eatery' && <UtensilsCrossed className="w-5 h-5" />}
-                                {data.businessType === 'barber' && <Scissors className="w-5 h-5" />}
-                                {data.businessType === 'laundry' && <ShoppingBag className="w-5 h-5" />}
-                                {data.businessType === 'store' && <Store className="w-5 h-5" />}
-                                {data.businessType === 'service' && <Briefcase className="w-5 h-5" />}
-                                <span className="text-black text-xs font-black uppercase">{data.businessType}</span>
+                                {businessAdData.businessType === 'eatery' && <UtensilsCrossed className="w-5 h-5" />}
+                                {businessAdData.businessType === 'barber' && <Scissors className="w-5 h-5" />}
+                                {businessAdData.businessType === 'laundry' && <ShoppingBag className="w-5 h-5" />}
+                                {businessAdData.businessType === 'store' && <Store className="w-5 h-5" />}
+                                {businessAdData.businessType === 'service' && <Briefcase className="w-5 h-5" />}
+                                <span className="text-black text-xs font-black uppercase">{businessAdData.businessType}</span>
                             </div>
                         </div>
                     )}
 
                     <div className="p-6 space-y-4">
                         <div className="flex items-start justify-between gap-3">
-                            <h3 className="text-xl font-bold text-white flex-1">{data.businessName}</h3>
-                            <span className="text-sm font-bold text-gray-300 bg-white/10 px-3 py-1 rounded-full">{data.priceRange}</span>
+                            <h3 className="text-xl font-bold text-white flex-1">{businessAdData.businessName}</h3>
+                            <span className="text-sm font-bold text-gray-300 bg-white/10 px-3 py-1 rounded-full">{businessAdData.priceRange}</span>
                         </div>
 
-                        <p className="text-gray-400">{data.description}</p>
+                        <p className="text-gray-400">{businessAdData.description}</p>
 
-                        {data.hasDiscount && data.discountDetails && (
+                        {businessAdData.hasDiscount && businessAdData.discountDetails && (
                             <div className="bg-green-500/10 border border-green-500/30 rounded-xl p-3 flex items-center gap-2">
                                 <Star className="w-5 h-5 text-green-400 flex-shrink-0" />
-                                <span className="text-sm text-green-400 font-semibold">{data.discountDetails}</span>
+                                <span className="text-sm text-green-400 font-semibold">{businessAdData.discountDetails}</span>
                             </div>
                         )}
 
                         <div className="space-y-2 text-sm">
                             <div className="flex items-center text-gray-400">
                                 <MapPin className="w-4 h-4 mr-2" />
-                                {data.location}
+                                {businessAdData.location}
                             </div>
                             <div className="flex items-center text-gray-400">
                                 <Home className="w-4 h-4 mr-2" />
-                                Target: {data.targetUniversity}
+                                Target: {businessAdData.targetUniversity}
                             </div>
                             <div className="flex items-center text-gray-400">
                                 <Phone className="w-4 h-4 mr-2" />
-                                {data.phoneNumber}
+                                {businessAdData.phoneNumber}
                             </div>
-                            {data.website && (
+                            {businessAdData.website && (
                                 <div className="flex items-center text-gray-400">
                                     <ExternalLink className="w-4 h-4 mr-2" />
-                                    {data.website}
+                                    {businessAdData.website}
                                 </div>
                             )}
                         </div>
@@ -112,10 +98,10 @@ export default function BusinessReview({ data, imagePreviews, selectedPackage, p
                     <div className="bg-white/5 border border-white/10 rounded-xl p-4">
                         <h4 className="font-bold text-white mb-2">Business Info</h4>
                         <ul className="space-y-1 text-sm text-gray-400">
-                            <li>✓ Type: {data.businessType}</li>
-                            <li>✓ Target: {data.targetUniversity}</li>
+                            <li>✓ Type: {businessAdData.businessType}</li>
+                            <li>✓ Target: {businessAdData.targetUniversity}</li>
                             <li>✓ Photos: {imagePreviews.length}</li>
-                            <li>✓ CTA: {data.ctaText}</li>
+                            <li>✓ CTA: {businessAdData.ctaText}</li>
                         </ul>
                     </div>
                     <div className="bg-gradient-to-br from-purple-500/10 to-blue-500/10 border border-purple-500/30 rounded-xl p-4">

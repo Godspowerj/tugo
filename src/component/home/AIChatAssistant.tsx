@@ -1,23 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { X, Send } from 'lucide-react';
+import { useHome } from '@/src/context/HomeContext';
 
-interface AIChatAssistantProps {
-    showAIChat: boolean;
-    setShowAIChat: (show: boolean) => void;
-    chatMessages: { role: string; content: string }[];
-    setChatMessages: (messages: { role: string; content: string }[]) => void;
-    chatInput: string;
-    setChatInput: (input: string) => void;
-}
+const AIChatAssistant: React.FC = () => {
+    const {
+        showAIChat,
+        setShowAIChat,
+        chatMessages,
+        setChatMessages,
+        chatInput,
+        setChatInput
+    } = useHome();
 
-const AIChatAssistant: React.FC<AIChatAssistantProps> = ({
-    showAIChat,
-    setShowAIChat,
-    chatMessages,
-    setChatMessages,
-    chatInput,
-    setChatInput,
-}) => {
     const handleSendMessage = () => {
         if (!chatInput.trim()) return;
 
@@ -43,11 +37,11 @@ const AIChatAssistant: React.FC<AIChatAssistantProps> = ({
             {showAIChat && (
                 <div className="fixed inset-0 z-[9999] flex items-end sm:items-center justify-center sm:p-4">
                     {/* Backdrop */}
-                    <div 
-                        className="absolute inset-0 bg-black/90 backdrop-blur-sm" 
+                    <div
+                        className="absolute inset-0 bg-black/90 backdrop-blur-sm"
                         onClick={() => setShowAIChat(false)}
                     ></div>
-                    
+
                     {/* Modal */}
                     <div className="relative w-full sm:max-w-2xl h-[90vh] sm:h-[600px] bg-gradient-to-b from-gray-900 to-black rounded-t-3xl sm:rounded-3xl border border-white/20 flex flex-col shadow-2xl">
                         {/* Header */}
@@ -61,8 +55,8 @@ const AIChatAssistant: React.FC<AIChatAssistantProps> = ({
                                     <p className="text-xs text-gray-400">Always here to help</p>
                                 </div>
                             </div>
-                            <button 
-                                onClick={() => setShowAIChat(false)} 
+                            <button
+                                onClick={() => setShowAIChat(false)}
                                 className="p-2 sm:p-2.5 hover:bg-white/10 rounded-full transition-all flex-shrink-0"
                             >
                                 <X className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -72,15 +66,14 @@ const AIChatAssistant: React.FC<AIChatAssistantProps> = ({
                         {/* Messages */}
                         <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-3 sm:space-y-4 scrollbar-hide">
                             {chatMessages.map((msg, idx) => (
-                                <div 
-                                    key={idx} 
+                                <div
+                                    key={idx}
                                     className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                                 >
-                                    <div className={`max-w-[85%] sm:max-w-[80%] px-4 sm:px-5 py-3 sm:py-3.5 rounded-2xl text-sm sm:text-base ${
-                                        msg.role === 'user'
+                                    <div className={`max-w-[85%] sm:max-w-[80%] px-4 sm:px-5 py-3 sm:py-3.5 rounded-2xl text-sm sm:text-base ${msg.role === 'user'
                                             ? 'bg-white text-black font-medium'
                                             : 'bg-white/10 text-white border border-white/20'
-                                    }`}>
+                                        }`}>
                                         {msg.content}
                                     </div>
                                 </div>
@@ -98,8 +91,8 @@ const AIChatAssistant: React.FC<AIChatAssistantProps> = ({
                                     placeholder="Ask me anything..."
                                     className="flex-1 px-4 sm:px-5 py-3 sm:py-3.5 bg-white/10 border border-white/20 rounded-full text-sm sm:text-base text-white placeholder-gray-400 focus:outline-none focus:border-white/40 transition-all"
                                 />
-                                <button 
-                                    onClick={handleSendMessage} 
+                                <button
+                                    onClick={handleSendMessage}
                                     className="w-12 h-12 sm:w-14 sm:h-14 bg-white text-black rounded-full flex items-center justify-center hover:scale-110 active:scale-95 transition-transform shadow-lg flex-shrink-0"
                                     aria-label="Send message"
                                 >

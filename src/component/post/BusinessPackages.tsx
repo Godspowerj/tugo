@@ -1,5 +1,6 @@
 import React from 'react';
 import { Star, Check, Building2 } from 'lucide-react';
+import { usePost } from '@/src/context/PostContext';
 
 interface Package {
     id: string;
@@ -12,12 +13,12 @@ interface Package {
 }
 
 interface BusinessPackagesProps {
-    selectedPackage: string;
-    setSelectedPackage: (pkgId: string) => void;
     packages: Package[];
 }
 
-export default function BusinessPackages({ selectedPackage, setSelectedPackage, packages }: BusinessPackagesProps) {
+export default function BusinessPackages({ packages }: BusinessPackagesProps) {
+    const { selectedPackage, setSelectedPackage } = usePost();
+
     return (
         <div className="space-y-6 animate-fade-in">
             <div className="text-center mb-8">
@@ -31,8 +32,8 @@ export default function BusinessPackages({ selectedPackage, setSelectedPackage, 
                         key={pkg.id}
                         onClick={() => setSelectedPackage(pkg.id)}
                         className={`relative p-6 rounded-2xl border-2 transition-all text-left ${selectedPackage === pkg.id
-                                ? 'bg-white text-black border-white scale-105'
-                                : 'bg-white/5 border-white/10 hover:border-white/30'
+                            ? 'bg-white text-black border-white scale-105'
+                            : 'bg-white/5 border-white/10 hover:border-white/30'
                             }`}
                     >
                         {pkg.recommended && (

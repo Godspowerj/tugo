@@ -1,38 +1,35 @@
+
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import { X, User, GraduationCap, Sparkles, Loader2, Camera, Upload } from "lucide-react";
-import { profileApi, ProfileData, ProfileResponse } from "../api/profileApi";
+import { profileApi, ProfileData } from "../api/profileApi";
 import { toast } from "sonner";
+import { useProfile } from "../context/ProfileContext";
 
-interface ProfileEditModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  currentProfile: ProfileResponse;
-  onProfileUpdated: (updatedProfile: ProfileResponse) => void;
-}
+export default function ProfileEditModal() {
+  const {
+    isEditModalOpen,
+    closeEditModal,
+    currentProfile,
+    updateProfile
+  } = useProfile();
 
-export default function ProfileEditModal({
-  isOpen,
-  onClose,
-  currentProfile,
-  onProfileUpdated,
-}: ProfileEditModalProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [formData, setFormData] = useState<ProfileData>({
-    university: currentProfile.university,
-    major: currentProfile.major,
-    year: currentProfile.year,
-    bio: currentProfile.bio,
-    lifestyle: currentProfile.lifestyles,
+    university: "",
+    major: "",
+    year: "",
+    bio: "",
+    lifestyle: [],
   });
 
-  const [previewImage, setPreviewImage] = useState<string | null>(currentProfile.profilePicture || null);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (isOpen) {
+    if (isEditModalOpen && currentProfile) {
       setFormData({
         university: currentProfile.university,
         major: currentProfile.major,
@@ -43,7 +40,7 @@ export default function ProfileEditModal({
       setPreviewImage(currentProfile.profilePicture || null);
       setCurrentStep(0);
     }
-  }, [isOpen, currentProfile]);
+  }, [isEditModalOpen, currentProfile]);
 
   const universities = [
     "University of Lagos",
@@ -128,7 +125,7 @@ export default function ProfileEditModal({
       const response = await profileApi.uploadProfilePicture(formData);
       if (response.success && response.data) {
         toast.success("Profile picture uploaded!");
-        onProfileUpdated(response.data.profile);
+        updateProfile(response.data.profile);
       } else {
         toast.error(response.message || "Failed to upload image");
       }
@@ -147,12 +144,12 @@ export default function ProfileEditModal({
 
       if (response.success && response.data) {
         toast.success("Profile updated successfully! 🎉");
-        onProfileUpdated(response.data);
-        onClose();
+        updateProfile(response.data);
+        closeEditModal();
       } else {
         if (response.errors && response.errors.length > 0) {
           response.errors.forEach((error: any) => {
-            toast.error(`${error.field}: ${error.message}`);
+            toast.error(`${error.field}: ${error.message} `);
           });
         } else {
           toast.error(response.message || "Failed to update profile");
@@ -171,7 +168,7 @@ export default function ProfileEditModal({
       case 0:
         return true;
       case 1:
-        return formData.university && formData.major && formData.year;
+        return !!(formData.university && formData.major && formData.year);
       case 2:
         return formData.bio.length >= 20 && formData.bio.length <= 500;
       case 3:
@@ -181,36 +178,35 @@ export default function ProfileEditModal({
     }
   };
 
-  if (!isOpen) return null;
+  if (!isEditModalOpen || !currentProfile) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
       <div className="relative w-full sm:max-w-2xl lg:max-w-4xl h-[95vh] sm:h-auto sm:max-h-[85vh] flex flex-col bg-gradient-to-b from-gray-900 to-black rounded-t-3xl sm:rounded-3xl border border-white/20 shadow-2xl overflow-hidden">
-        
+
         {/* Header */}
         <div className="flex-shrink-0 bg-black/90 backdrop-blur-xl border-b border-white/10 p-4 sm:p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl sm:text-2xl font-black">Edit Profile</h2>
             <button
-              onClick={onClose}
+              onClick={closeEditModal}
               className="p-2 bg-white/10 hover:bg-white/20 rounded-full transition-all"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
-          
+
           {/* Progress bar */}
           <div className="flex items-center gap-2 mb-3">
             {steps.map((step, idx) => (
               <div
                 key={step.id}
-                className={`flex-1 h-2 rounded-full transition-all ${
-                  idx <= currentStep ? "bg-white" : "bg-white/20"
-                }`}
+                className={`flex - 1 h - 2 rounded - full transition - all ${idx <= currentStep ? "bg-white" : "bg-white/20"
+                  } `}
               />
             ))}
           </div>
-          
+
           <div className="text-xs sm:text-sm text-gray-400 font-medium">
             Step {currentStep + 1} of {steps.length} - {steps[currentStep].title}
           </div>
@@ -241,7 +237,7 @@ export default function ProfileEditModal({
                     </div>
                   )}
 
-                  <div 
+                  <div
                     className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
                     onClick={() => fileInputRef.current?.click()}
                   >
@@ -321,11 +317,10 @@ export default function ProfileEditModal({
                       <button
                         key={year}
                         onClick={() => setFormData({ ...formData, year })}
-                        className={`px-2 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
-                          formData.year === year
+                        className={`px - 2 py - 2 sm: py - 2.5 rounded - xl text - xs sm: text - sm font - semibold transition - all ${formData.year === year
                             ? "bg-white text-black"
                             : "bg-white/5 border border-white/10 hover:border-white/30"
-                        }`}
+                          } `}
                       >
                         {year}
                       </button>
@@ -358,9 +353,8 @@ export default function ProfileEditModal({
                 />
                 <div className="flex justify-between text-xs sm:text-sm mt-2">
                   <span className="text-gray-500">20-500 characters</span>
-                  <span className={`font-semibold ${
-                    formData.bio.length >= 20 && formData.bio.length <= 500 ? "text-white" : "text-gray-500"
-                  }`}>
+                  <span className={`font - semibold ${formData.bio.length >= 20 && formData.bio.length <= 500 ? "text-white" : "text-gray-500"
+                    } `}>
                     {formData.bio.length} / 500
                   </span>
                 </div>
@@ -384,17 +378,15 @@ export default function ProfileEditModal({
                   <button
                     key={lifestyle.id}
                     onClick={() => handleLifestyleToggle(lifestyle.id)}
-                    className={`p-3 rounded-xl border-2 transition-all text-left ${
-                      formData.lifestyle.includes(lifestyle.id)
+                    className={`p - 3 rounded - xl border - 2 transition - all text - left ${formData.lifestyle.includes(lifestyle.id)
                         ? "bg-white text-black border-white"
                         : "bg-white/5 border-white/10 hover:border-white/30"
-                    }`}
+                      } `}
                   >
                     <div className="text-xl sm:text-2xl mb-1">{lifestyle.icon}</div>
                     <div className="font-bold text-xs mb-0.5">{lifestyle.label}</div>
-                    <div className={`text-[10px] ${
-                      formData.lifestyle.includes(lifestyle.id) ? "text-black/70" : "text-gray-500"
-                    }`}>
+                    <div className={`text - [10px] ${formData.lifestyle.includes(lifestyle.id) ? "text-black/70" : "text-gray-500"
+                      } `}>
                       {lifestyle.desc}
                     </div>
                   </button>
@@ -411,7 +403,7 @@ export default function ProfileEditModal({
         {/* Footer */}
         <div className="flex-shrink-0 bg-black/90 backdrop-blur-xl border-t border-white/10 p-4 sm:p-6 flex items-center justify-between gap-3">
           <button
-            onClick={currentStep > 0 ? handlePrev : onClose}
+            onClick={currentStep > 0 ? handlePrev : closeEditModal}
             disabled={loading || uploading}
             className="px-4 sm:px-5 py-2.5 sm:py-3 text-sm sm:text-base text-gray-400 hover:text-white font-semibold transition-colors disabled:opacity-50"
           >
@@ -422,11 +414,10 @@ export default function ProfileEditModal({
             <button
               onClick={handleNext}
               disabled={!canProceed() || uploading}
-              className={`px-5 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base rounded-full font-bold transition-all ${
-                canProceed() && !uploading
+              className={`px - 5 sm: px - 6 py - 2.5 sm: py - 3 text - sm sm: text - base rounded - full font - bold transition - all ${canProceed() && !uploading
                   ? "bg-white text-black hover:bg-gray-100"
                   : "bg-white/20 text-gray-500 cursor-not-allowed"
-              }`}
+                } `}
             >
               Next
             </button>
@@ -450,27 +441,27 @@ export default function ProfileEditModal({
       </div>
 
       <style jsx>{`
-        @keyframes fade-in {
-          from {
-            opacity: 0;
-            transform: scale(0.95);
-          }
+@keyframes fade -in {
+  from {
+  opacity: 0;
+  transform: scale(0.95);
+}
           to {
-            opacity: 1;
-            transform: scale(1);
-          }
+  opacity: 1;
+  transform: scale(1);
+}
         }
-        .animate-fade-in {
-          animation: fade-in 0.2s ease-out;
+        .animate - fade -in {
+  animation: fade -in 0.2s ease- out;
         }
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}</style>
+        .scrollbar - hide:: -webkit - scrollbar {
+  display: none;
+}
+        .scrollbar - hide {
+  -ms - overflow - style: none;
+  scrollbar - width: none;
+}
+`}</style>
     </div>
   );
 }

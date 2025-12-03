@@ -2,10 +2,10 @@
 import { useState, useRef, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
-import { ArrowLeft, Mail } from "lucide-react";
+import { ArrowLeft, Lock } from "lucide-react";
 import Link from "next/link";
 
-const OTPContent = () => {
+const ResetOTPContent = () => {
     const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
@@ -58,10 +58,7 @@ const OTPContent = () => {
         setLoading(true);
         setError("");
         try {
-            // Use apiClient if available, or fetch with correct base URL
-            // Assuming apiClient is not imported, I'll use fetch but ensure URL is correct
-            // Actually, let's use the hardcoded URL but make sure it matches the backend port
-            const response = await fetch("http://localhost:5000/api/auth/verify-otp", {
+            const response = await fetch("http://localhost:5000/api/auth/password-reset/verify", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, otp: otpValue }),
@@ -69,8 +66,8 @@ const OTPContent = () => {
             const data = await response.json();
 
             if (response.ok && data.success) {
-                toast.success("Email verified successfully!");
-                router.push("/auth/login");
+                toast.success("Code verified!");
+                router.push(`/auth/resetPassword/new?email=${encodeURIComponent(email)}&otp=${otpValue}`);
             } else {
                 setError(data.message || "Invalid OTP. Please try again.");
                 toast.error(data.message || "Invalid OTP");
@@ -87,7 +84,7 @@ const OTPContent = () => {
     const handleResend = async () => {
         setLoading(true);
         try {
-            const response = await fetch("http://localhost:5000/api/auth/resend-otp", {
+            const response = await fetch("http://localhost:5000/api/auth/password-reset/request", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email }),
@@ -95,11 +92,11 @@ const OTPContent = () => {
             const data = await response.json();
 
             if (response.ok && data.success) {
-                toast.success("New OTP sent to your email!");
+                toast.success("New code sent to your email!");
                 setOtp(["", "", "", "", "", ""]);
                 inputRefs.current[0]?.focus();
             } else {
-                toast.error(data.message || "Failed to resend OTP");
+                toast.error(data.message || "Failed to resend code");
             }
         } catch (err) {
             toast.error("Network error. Please try again.");
@@ -115,7 +112,7 @@ const OTPContent = () => {
         <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
             <div className="w-full max-w-md">
                 <div className="mb-8">
-                    <Link href="/auth/register">
+                    <Link href="/auth/resetPassword">
                         <button className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-6">
                             <ArrowLeft className="w-5 h-5" />
                             <span>Back</span>
@@ -125,9 +122,9 @@ const OTPContent = () => {
                 <div className="space-y-8">
                     <div className="text-center space-y-3">
                         <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <Mail className="w-8 h-8 text-white" />
+                            <Lock className="w-8 h-8 text-white" />
                         </div>
-                        <h1 className="text-4xl font-black">Verify Your Email</h1>
+                        <h1 className="text-4xl font-black">Enter Code</h1>
                         <p className="text-gray-400">
                             We've sent a 6-digit code to<br />
                             <span className="text-white font-semibold">{email}</span>
@@ -156,7 +153,7 @@ const OTPContent = () => {
                             disabled={isDisabled}
                             className={`w-full py-4 bg-white text-black rounded-full font-bold hover:bg-gray-100 transition-all transform hover:scale-105 active:scale-95 ${isDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
                         >
-                            {loading ? "Verifying..." : "Verify Email"}
+                            {loading ? "Verifying..." : "Verify Code"}
                         </button>
                         <div className="text-center">
                             <span className="text-gray-400 text-sm">Didn't receive the code? </span>
@@ -171,12 +168,12 @@ const OTPContent = () => {
     );
 };
 
-const OTPVerification = () => {
+const ResetOTPVerification = () => {
     return (
         <Suspense fallback={<div className="min-h-screen bg-black text-white flex items-center justify-center">Loading...</div>}>
-            <OTPContent />
+            <ResetOTPContent />
         </Suspense>
     );
 };
 
-export default OTPVerification;
+export default ResetOTPVerification;

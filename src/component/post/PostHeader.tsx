@@ -1,16 +1,13 @@
 import React from 'react';
 import { X } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { usePost } from '@/src/context/PostContext';
 
 interface PostHeaderProps {
-    currentStep: number;
-    totalSteps: number;
-    stepTitle: string;
     onBack: () => void;
 }
 
-export default function PostHeader({ currentStep, totalSteps, stepTitle, onBack }: PostHeaderProps) {
-    const router = useRouter();
+export default function PostHeader({ onBack }: PostHeaderProps) {
+    const { currentStep, steps } = usePost();
 
     return (
         <header className="sticky top-0 z-10 bg-black/80 backdrop-blur-xl border-b border-white/10">
@@ -19,7 +16,7 @@ export default function PostHeader({ currentStep, totalSteps, stepTitle, onBack 
                     <div>
                         <h1 className="text-2xl font-black">Create Post</h1>
                         <p className="text-sm text-gray-400 mt-1">
-                            Step {currentStep + 1} of {totalSteps} - {stepTitle}
+                            Step {currentStep + 1} of {steps.length} - {steps[currentStep].title}
                         </p>
                     </div>
                     <button onClick={onBack} className="p-2 hover:bg-white/10 rounded-full transition">
@@ -27,7 +24,7 @@ export default function PostHeader({ currentStep, totalSteps, stepTitle, onBack 
                     </button>
                 </div>
                 <div className="flex gap-2">
-                    {Array.from({ length: totalSteps }).map((_, idx) => (
+                    {Array.from({ length: steps.length }).map((_, idx) => (
                         <div key={idx} className={`flex-1 h-2 rounded-full transition-all ${idx <= currentStep ? 'bg-white' : 'bg-white/20'}`} />
                     ))}
                 </div>

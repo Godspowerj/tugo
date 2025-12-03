@@ -1,15 +1,17 @@
-// ...existing code...
+
 "use client";
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
+import { useAuth } from "@/src/context/authContext";
 
 const Registration = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [acceptCookies, setAcceptCookies] = useState(false);
+  const [acceptCookies, setAcceptCookies] = useState(true);
   const [loading, setLoading] = useState(false);
+  const { signup } = useAuth();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -56,7 +58,7 @@ const Registration = () => {
     });
   };
 
-// ...existing code...
+  // ...existing code...
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const validation = validate();
@@ -66,42 +68,16 @@ const Registration = () => {
 
     setLoading(true);
     try {
-      console.log("Sending signup request...", { ...formData, acceptCookies });
-      const response = await fetch("https://tugobackend.onrender.com/api/auth/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ ...formData, acceptCookies }),
-      });
+      await signup(formData.email, formData.password, formData.fullName, formData.university, acceptCookies);
+      router.push(`/auth/otp?email=${encodeURIComponent(formData.email)}`);
 
-      const data = await response.json();
-      console.log("Signup response:", data);
-      setLoading(false);
-
-      if (data.success) {
-        localStorage.setItem("accessToken", data.accessToken);
-        toast.success("Registration successful. Redirecting...");
-        router.push("/setup");
-      } else {
-        toast.error(data.message || "Registration failed");
-        // show server validation errors (if provided)
-        if (data.errors) {
-          const serverErrors: Record<string, string> = {};
-          (data.errors as any[]).forEach((err) => {
-            serverErrors[err.field || "general"] = err.message || JSON.stringify(err);
-          });
-          setErrors(serverErrors);
-        } else {
-          setErrors({ general: data.message || "Registration failed" });
-        }
-      }
     } catch (err) {
       setLoading(false);
-      toast.error("Network error. Please try again.");
-      console.error("Signup exception:", err);
+    } finally {
+      setLoading(false);
     }
   };
-// ...existing code...
+
 
   return (
     <>
@@ -201,9 +177,8 @@ const Registration = () => {
             <button
               onClick={handleSubmit}
               disabled={loading}
-              className={`w-full py-4 bg-white text-black rounded-full font-bold hover:bg-gray-100 transition-all transform hover:scale-105 active:scale-95 ${
-                loading ? "opacity-70 cursor-not-allowed" : ""
-              }`}
+              className={`w-full py-4 bg-white text-black rounded-full font-bold hover:bg-gray-100 transition-all transform hover:scale-105 active:scale-95 ${loading ? "opacity-70 cursor-not-allowed" : ""
+                }`}
             >
               {loading ? "Creating..." : "Create Account"}
             </button>
@@ -213,23 +188,9 @@ const Registration = () => {
             </p>
           </div>
         </div>
-
-        <div className="flex items-center gap-2 mt-4">
-          <input
-            type="checkbox"
-            id="acceptCookies"
-            checked={acceptCookies}
-            onChange={() => setAcceptCookies(!acceptCookies)}
-            className="accent-white"
-          />
-          <label htmlFor="acceptCookies" className="text-gray-400 text-sm">
-            I accept cookies to stay logged in
-          </label>
-        </div>
       </div>
     </>
   );
 };
 
 export default Registration;
-// ...existing code...

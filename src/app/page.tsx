@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowRight, Users, Zap, Sparkles, Home, MessageCircle, UserCheck } from 'lucide-react';
+import { ArrowRight, Users, Zap, Sparkles } from 'lucide-react';
 import Header from '../component/header';
 
 export default function TugoOnboarding() {
@@ -180,8 +180,8 @@ export default function TugoOnboarding() {
                                     setCurrentScreen(index);
                                 }}
                                 className={`h-2 rounded-full transition-all duration-300 ${index === currentScreen
-                                        ? 'w-8 bg-white'
-                                        : 'w-2 bg-white/30 hover:bg-white/50'
+                                    ? 'w-8 bg-white'
+                                    : 'w-2 bg-white/30 hover:bg-white/50'
                                     }`}
                             />
                         ))}

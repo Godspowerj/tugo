@@ -1,13 +1,9 @@
 import React from 'react';
+import { usePost } from '@/src/context/PostContext';
 
-interface BusinessInfoProps {
-    businessName: string;
-    setBusinessName: (name: string) => void;
-    description: string;
-    setDescription: (desc: string) => void;
-}
+export default function BusinessInfo() {
+    const { businessAdData, updateBusinessAd } = usePost();
 
-export default function BusinessInfo({ businessName, setBusinessName, description, setDescription }: BusinessInfoProps) {
     return (
         <div className="space-y-6 animate-fade-in">
             <div className="text-center mb-8">
@@ -22,8 +18,8 @@ export default function BusinessInfo({ businessName, setBusinessName, descriptio
                     </label>
                     <input
                         type="text"
-                        value={businessName}
-                        onChange={(e) => setBusinessName(e.target.value)}
+                        value={businessAdData.businessName}
+                        onChange={(e) => updateBusinessAd({ businessName: e.target.value })}
                         placeholder="e.g., Campus Bites Restaurant"
                         maxLength={100}
                         className="w-full px-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 outline-none focus:border-white/30 transition-all"
@@ -35,15 +31,15 @@ export default function BusinessInfo({ businessName, setBusinessName, descriptio
                         Description *
                     </label>
                     <textarea
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
+                        value={businessAdData.description}
+                        onChange={(e) => updateBusinessAd({ description: e.target.value })}
                         placeholder="Describe your business, services, what makes you special..."
                         rows={8}
                         maxLength={500}
                         className="w-full px-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 outline-none focus:border-white/30 transition-all resize-none"
                     />
                     <p className="text-xs text-gray-500 mt-1">
-                        {description.length}/500 characters (min 50)
+                        {businessAdData.description.length}/500 characters (min 50)
                     </p>
                 </div>
             </div>

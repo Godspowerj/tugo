@@ -1,4 +1,5 @@
 import React from 'react';
+import { usePost } from '@/src/context/PostContext';
 
 interface Package {
     id: string;
@@ -11,12 +12,12 @@ interface Package {
 }
 
 interface StudentBoostProps {
-    selectedPackage: string;
-    setSelectedPackage: (pkgId: string) => void;
     packages: Package[];
 }
 
-export default function StudentBoost({ selectedPackage, setSelectedPackage, packages }: StudentBoostProps) {
+export default function StudentBoost({ packages }: StudentBoostProps) {
+    const { selectedPackage, setSelectedPackage } = usePost();
+
     return (
         <div className="space-y-6 animate-fade-in">
             <div className="text-center mb-8">

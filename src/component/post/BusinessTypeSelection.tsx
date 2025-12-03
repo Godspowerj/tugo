@@ -1,14 +1,10 @@
 import React from 'react';
 import { UtensilsCrossed, Scissors, ShoppingBag, Store, Briefcase } from 'lucide-react';
+import { usePost } from '@/src/context/PostContext';
 
-type BusinessType = 'eatery' | 'barber' | 'laundry' | 'store' | 'service' | '';
+export default function BusinessTypeSelection() {
+    const { businessAdData, updateBusinessAd } = usePost();
 
-interface BusinessTypeSelectionProps {
-    businessType: BusinessType;
-    setBusinessType: (type: BusinessType) => void;
-}
-
-export default function BusinessTypeSelection({ businessType, setBusinessType }: BusinessTypeSelectionProps) {
     const businessTypes = [
         { id: 'eatery', emoji: '🍕', title: 'Restaurant/Eatery', description: 'Food delivery, restaurants, cafes', icon: UtensilsCrossed },
         { id: 'barber', emoji: '✂️', title: 'Salon/Barber', description: 'Hair salons, barber shops, beauty', icon: Scissors },
@@ -27,13 +23,13 @@ export default function BusinessTypeSelection({ businessType, setBusinessType }:
                 {businessTypes.map((type) => (
                     <button
                         key={type.id}
-                        onClick={() => setBusinessType(type.id as BusinessType)}
-                        className={`p-6 rounded-2xl border-2 transition-all text-left ${businessType === type.id ? 'bg-white text-black border-white' : 'bg-white/5 border-white/10 hover:border-white/30'
+                        onClick={() => updateBusinessAd({ businessType: type.id as any })}
+                        className={`p-6 rounded-2xl border-2 transition-all text-left ${businessAdData.businessType === type.id ? 'bg-white text-black border-white' : 'bg-white/5 border-white/10 hover:border-white/30'
                             }`}
                     >
                         <div className="text-4xl mb-3">{type.emoji}</div>
                         <h3 className="font-bold text-base mb-2">{type.title}</h3>
-                        <p className={`text-sm ${businessType === type.id ? 'text-black/70' : 'text-gray-400'}`}>
+                        <p className={`text-sm ${businessAdData.businessType === type.id ? 'text-black/70' : 'text-gray-400'}`}>
                             {type.description}
                         </p>
                     </button>
