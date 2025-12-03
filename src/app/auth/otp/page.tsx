@@ -61,7 +61,7 @@ const OTPContent = () => {
             // Use apiClient if available, or fetch with correct base URL
             // Assuming apiClient is not imported, I'll use fetch but ensure URL is correct
             // Actually, let's use the hardcoded URL but make sure it matches the backend port
-            const response = await fetch("http://localhost:5000/api/auth/verify-otp", {
+            const response = await fetch("https://tugobackend.onrender.com/api/auth/verify-otp", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, otp: otpValue }),
