@@ -4,8 +4,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { ArrowLeft, Lock } from "lucide-react";
 import Link from "next/link";
+import { apiClient } from "@/src/lib/axios";
 
-const ResetOTPContent = () => {
+const OTPContent = () => {
     const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
@@ -48,6 +49,8 @@ const ResetOTPContent = () => {
         inputRefs.current[lastIndex]?.focus();
     };
 
+    // ... inside component ...
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const otpValue = otp.join("");
@@ -58,49 +61,22 @@ const ResetOTPContent = () => {
         setLoading(true);
         setError("");
         try {
-            const response = await fetch("http://localhost:5000/api/auth/password-reset/verify", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, otp: otpValue }),
-            });
-            const data = await response.json();
+            const response = await apiClient.post("/auth/password-reset/verify", { email, otp: otpValue });
+            const data = response.data;
 
-            if (response.ok && data.success) {
+            if (data.success) {
                 toast.success("Code verified!");
-                router.push(`/auth/resetPassword/new?email=${encodeURIComponent(email)}&otp=${otpValue}`);
+                // Redirect to new password page with email and otp
+                router.push(`/auth/resetPassword/new?email=${encodeURIComponent(email)}&otp=${encodeURIComponent(otpValue)}`);
             } else {
                 setError(data.message || "Invalid OTP. Please try again.");
                 toast.error(data.message || "Invalid OTP");
             }
-        } catch (err) {
-            setError("Network error. Please try again.");
-            toast.error("Network error. Please try again.");
+        } catch (err: any) {
+            const msg = err.response?.data?.message || "Network error. Please try again.";
+            setError(msg);
+            toast.error(msg);
             console.error("OTP verification error:", err);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const handleResend = async () => {
-        setLoading(true);
-        try {
-            const response = await fetch("http://localhost:5000/api/auth/password-reset/request", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email }),
-            });
-            const data = await response.json();
-
-            if (response.ok && data.success) {
-                toast.success("New code sent to your email!");
-                setOtp(["", "", "", "", "", ""]);
-                inputRefs.current[0]?.focus();
-            } else {
-                toast.error(data.message || "Failed to resend code");
-            }
-        } catch (err) {
-            toast.error("Network error. Please try again.");
-            console.error("Resend OTP error:", err);
         } finally {
             setLoading(false);
         }
@@ -124,7 +100,7 @@ const ResetOTPContent = () => {
                         <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
                             <Lock className="w-8 h-8 text-white" />
                         </div>
-                        <h1 className="text-4xl font-black">Enter Code</h1>
+                        <h1 className="text-4xl font-black">Enter Reset Code</h1>
                         <p className="text-gray-400">
                             We've sent a 6-digit code to<br />
                             <span className="text-white font-semibold">{email}</span>
@@ -155,12 +131,6 @@ const ResetOTPContent = () => {
                         >
                             {loading ? "Verifying..." : "Verify Code"}
                         </button>
-                        <div className="text-center">
-                            <span className="text-gray-400 text-sm">Didn't receive the code? </span>
-                            <button type="button" onClick={handleResend} disabled={loading} className="text-white font-semibold hover:underline text-sm disabled:opacity-50">
-                                Resend
-                            </button>
-                        </div>
                     </form>
                 </div>
             </div>
@@ -171,7 +141,7 @@ const ResetOTPContent = () => {
 const ResetOTPVerification = () => {
     return (
         <Suspense fallback={<div className="min-h-screen bg-black text-white flex items-center justify-center">Loading...</div>}>
-            <ResetOTPContent />
+            <OTPContent />
         </Suspense>
     );
 };

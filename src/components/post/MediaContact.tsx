@@ -5,24 +5,17 @@ import { usePost } from '@/src/context/PostContext';
 export default function MediaContact() {
     const {
         studentListingData,
-        businessAdData,
         updateStudentListing,
-        updateBusinessAd,
         imagePreviews,
         handleImageUpload,
-        removeImage,
-        isStudentListing
+        removeImage
     } = usePost();
 
-    const images = isStudentListing ? studentListingData.images : businessAdData.images;
-    const phoneNumber = isStudentListing ? studentListingData.phoneNumber : businessAdData.phoneNumber;
+    const images = studentListingData.images;
+    const phoneNumber = studentListingData.phoneNumber;
 
     const setPhoneNumber = (phone: string) => {
-        if (isStudentListing) {
-            updateStudentListing({ phoneNumber: phone });
-        } else {
-            updateBusinessAd({ phoneNumber: phone });
-        }
+        updateStudentListing({ phoneNumber: phone });
     };
 
     return (

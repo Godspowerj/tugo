@@ -1,8 +1,6 @@
-// ListingCard.tsx - Fixed
 import React from 'react';
 import { Users, Bed, Home, CheckCircle, MapPin, Calendar, MessageCircle, Star } from 'lucide-react';
 import Image from 'next/image';
-import { profile } from 'console';
 
 export interface Listing {
     id: string;
@@ -16,10 +14,10 @@ export interface Listing {
     location: string;
     isSponsored: boolean;
     posterName: string;
-    posterImage: string;
+    posterImage: string | null;
     posterPhone: string;
     posterVerified: boolean;
-    propertyImage: string;
+    propertyImage: string | null;
     availableFrom: string;
 }
 
@@ -43,15 +41,50 @@ const openWhatsApp = (phone: string, title: string) => {
         alert('Phone number not available for this listing');
         return;
     }
+
+    // Format phone number for WhatsApp
+    // Remove all spaces, dashes, and special characters
+    let formattedPhone = phone.replace(/[\s\-\(\)]/g, '');
+
+    // Convert Nigerian phone numbers to international format
+    // If starts with 0, replace with 234
+    if (formattedPhone.startsWith('0')) {
+        formattedPhone = '234' + formattedPhone.substring(1);
+    }
+    // If starts with +234, remove the +
+    else if (formattedPhone.startsWith('+234')) {
+        formattedPhone = formattedPhone.substring(1);
+    }
+    // If already starts with 234, keep as is
+    else if (!formattedPhone.startsWith('234')) {
+        // If it doesn't start with 0 or 234, assume it needs 234 prefix
+        formattedPhone = '234' + formattedPhone;
+    }
+
     const message = encodeURIComponent(`Hi! I'm interested in your listing: ${title}`);
-    window.open(`https://wa.me/${phone.replace(/\+/g, '')}?text=${message}`, '_blank');
+    const whatsappUrl = `https://wa.me/${formattedPhone}?text=${message}`;
+
+    console.log('Opening WhatsApp:', { original: phone, formatted: formattedPhone, url: whatsappUrl });
+    window.open(whatsappUrl, '_blank');
+};
+
+/**
+ * Get the user's initials from their name for the avatar fallback
+ */
+const getInitials = (name: string): string => {
+    if (!name) return 'U';
+    const parts = name.trim().split(' ');
+    if (parts.length === 1) {
+        return parts[0].charAt(0).toUpperCase();
+    }
+    return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
 };
 
 const ListingCard: React.FC<ListingCardProps> = ({ listing, isSponsored = false }) => {
     return (
         <div className={`w-full rounded-2xl sm:rounded-3xl overflow-hidden transition-all duration-300 backdrop-blur-sm group ${isSponsored
-                ? 'bg-gradient-to-br from-white/15 to-white/5 border border-white/20'
-                : 'bg-gradient-to-b from-white/10 to-white/5 border border-white/20 hover:border-white/40'
+            ? 'bg-gradient-to-br from-white/15 to-white/5 border border-white/20'
+            : 'bg-gradient-to-b from-white/10 to-white/5 border border-white/20 hover:border-white/40'
             }`}>
             {/* Image section */}
             <div className="relative h-64 sm:h-72 md:h-80 lg:h-96 overflow-hidden">
@@ -76,18 +109,17 @@ const ListingCard: React.FC<ListingCardProps> = ({ listing, isSponsored = false 
                 <div className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4 flex items-center justify-between gap-2">
                     <div className="flex items-center gap-2 sm:gap-3 min-w-0">
                         <div className="relative w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0">
-                            {listing.posterImage && (
+                            {listing.posterImage ? (
                                 <Image
                                     src={listing.posterImage}
                                     alt={`${listing.posterName}'s profile picture`}
                                     fill
                                     className="rounded-full border-2 border-white/80 object-cover"
                                 />
-                            )}
-                            {!listing.posterImage && (
+                            ) : (
                                 <div className="w-full h-full rounded-full border-2 border-white/80 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
                                     <span className="text-white font-bold text-sm sm:text-base">
-                                        {listing.posterName.charAt(0).toUpperCase()}
+                                        {getInitials(listing.posterName)}
                                     </span>
                                 </div>
                             )}
@@ -101,7 +133,7 @@ const ListingCard: React.FC<ListingCardProps> = ({ listing, isSponsored = false 
                             <p className="text-white font-bold text-sm sm:text-base truncate">{listing.posterName}</p>
                             <p className="text-white/70 text-xs sm:text-sm flex items-center gap-1">
                                 {listing.posterVerified && <CheckCircle className="w-2.5 h-2.5 sm:w-3 sm:h-3 flex-shrink-0" />}
-                                <span className="truncate">Verified User</span>
+                                <span className="truncate">{listing.posterVerified ? 'Verified User' : 'User'}</span>
                             </p>
                         </div>
                     </div>

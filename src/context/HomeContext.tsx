@@ -1,6 +1,6 @@
 "use client";
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { MOCK_FEED_ITEMS, UNIVERSITIES } from '@/src/lib/mockData';
+import { UNIVERSITIES } from '@/src/lib/mockData';
 
 interface HomeContextType {
     // Search & Filters
@@ -16,10 +16,12 @@ interface HomeContextType {
     // Feed Data
     feedItems: any[];
     loading: boolean;
+    error: string | null;
     filteredItems: any[];
     sponsoredItems: any[];
     regularItems: any[];
     fetchFeedData: () => Promise<void>;
+    refreshFeed: () => Promise<void>;
 
     // AI Chat
     showAIChat: boolean;
@@ -46,6 +48,7 @@ export const HomeProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     ]);
     const [chatInput, setChatInput] = useState('');
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
     const [feedItems, setFeedItems] = useState<any[]>([]);
 
     useEffect(() => {
@@ -70,13 +73,9 @@ export const HomeProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setLoading(true);
         try {
             const { listingApi } = await import('@/src/api/listingApi');
-            const { businessAdApi } = await import('@/src/api/businessAdApi');
 
-            // Fetch both listings and business ads in parallel
-            const [listingsResult, businessAdsResult] = await Promise.all([
-                listingApi.getListings(),
-                businessAdApi.getBusinessAds()
-            ]);
+            // Fetch listings
+            const listingsResult = await listingApi.getListings();
 
             const allItems = [];
 
@@ -93,52 +92,26 @@ export const HomeProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                     university: listing.university,
                     location: listing.location,
                     isSponsored: listing.isSponsored,
-                    posterName: listing.user?.fullName || 'Anonymous',
-                    posterImage: listing.user?.profile?.profilePicture || '',
-                    posterPhone: listing.phoneNumber,
-                    posterVerified: true,
-                    // Safe array access - use optional chaining to avoid errors
+                    posterName: listing.posterName || 'Anonymous',
+                    posterImage: listing.posterImage,
+                    posterPhone: listing.posterPhone,
+                    posterVerified: listing.posterVerified || false,
                     propertyImage: listing.images?.[0] || '',
                     availableFrom: listing.availableFrom,
                 }));
                 allItems.push(...formattedListings);
             }
 
-            // Format business ads - Convert backend data to frontend format
-            if (businessAdsResult.data?.businessAds) {
-                const formattedAds = businessAdsResult.data.businessAds.map((ad: any) => ({
-                    id: ad.id,
-                    type: 'business',
-                    businessType: ad.businessType,
-                    title: ad.businessName,
-                    description: ad.description,
-                    // Safe array access - use optional chaining to avoid errors
-                    image: ad.images?.[0] || '',
-                    link: ad.ctaLink || '',
-                    targetUniversity: ad.targetUniversity,
-                    location: ad.location,
-                    isSponsored: ad.isSponsored || false,
-                    ctaText: ad.ctaText,
-                    rating: ad.rating,
-                    priceRange: ad.priceRange,
-                    hasDiscount: ad.hasDiscount,
-                    discountDetails: ad.discountDetails,
-                }));
-                allItems.push(...formattedAds);
-            }
-
             setFeedItems(allItems);
             console.log('📊 Fetched feed data:', {
                 totalItems: allItems.length,
                 listings: allItems.filter(i => i.type === 'listing').length,
-                businessAds: allItems.filter(i => i.type === 'business').length,
                 allItems: allItems
             });
-        } catch (error) {
+        } catch (error: any) {
             console.error('Error fetching feed:', error);
-            // Fallback to mock data if API fails
-            console.log('Using mock data as fallback...');
-            setFeedItems(MOCK_FEED_ITEMS);
+            setError(error.message || 'Failed to fetch feed data');
+            setFeedItems([]);
         } finally {
             setLoading(false);
         }
@@ -146,7 +119,6 @@ export const HomeProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     /**
      * Filter feed items based on search query, type, and university
-     * This makes it easy for users to find exactly what they're looking for
      */
     const filteredItems = feedItems.filter(item => {
         // Search filter - Check if search query matches title, description, location, or university
@@ -154,26 +126,19 @@ export const HomeProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             ? (item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 item.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                // Only check university for listings (business ads don't have this field)
-                (item.type === 'listing' && item.university?.toLowerCase().includes(searchQuery.toLowerCase())))
+                item.university?.toLowerCase().includes(searchQuery.toLowerCase()))
             : true;
 
         // Type filter - Show items based on selected type
         let matchesType = true;
         if (selectedType !== 'all') {
-            if (item.type === 'listing') {
-                // For listings, match the listing type (roommate, bunkmate, rental)
-                matchesType = item.listingType === selectedType;
-            } else {
-                // Business ads don't match roommate/bunkmate/rental filters
-                matchesType = false;
-            }
+            matchesType = item.listingType === selectedType;
         }
 
-        // University filter - Only applies to listings
+        // University filter
         const matchesUniversity = selectedUniversity === 'All Universities'
             ? true
-            : (item.type === 'listing' && item.university === selectedUniversity);
+            : item.university === selectedUniversity;
 
         return matchesSearch && matchesType && matchesUniversity;
     });
@@ -202,10 +167,12 @@ export const HomeProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setSelectedUniversity,
         feedItems,
         loading,
+        error,
         filteredItems,
         sponsoredItems,
         regularItems,
         fetchFeedData,
+        refreshFeed: fetchFeedData,
         showAIChat,
         setShowAIChat,
         chatMessages,

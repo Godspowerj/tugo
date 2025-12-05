@@ -4,6 +4,7 @@ import { Mail, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { apiClient } from "@/src/lib/axios";
 
 const ResetPassword = () => {
   const [email, setEmail] = useState("");
@@ -14,21 +15,16 @@ const ResetPassword = () => {
     if (!email) return toast.error("Please enter your email");
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:5000/api/auth/password-reset/request", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
-      const data = await response.json();
-      if (response.ok && data.success) {
+      const response = await apiClient.post("/auth/password-reset/request", { email });
+      const data = response.data;
+      if (data.success) {
         toast.success(data.message);
-        // Redirect to the new OTP page
         router.push(`/auth/resetPassword/otp?email=${encodeURIComponent(email)}`);
       } else {
         toast.error(data.message || "Failed to send reset link");
       }
-    } catch (error) {
-      toast.error("Network error");
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || "Network error");
     } finally {
       setLoading(false);
     }
@@ -46,7 +42,7 @@ const ResetPassword = () => {
       <div className="text-center space-y-3">
         <h1 className="text-4xl font-black">Reset Password</h1>
         <p className="text-gray-400">
-          Enter your email to receive a code
+          Enter your email to receive a reset code
         </p>
       </div>
 
@@ -66,7 +62,7 @@ const ResetPassword = () => {
           <button
             onClick={handleRequestReset}
             disabled={loading}
-            className="w-full py-4 mt-4 bg-white text-black rounded-full font-bold hover:bg-gray-100 transition-all"
+            className="w-full py-4 mt-4 bg-white text-black rounded-full font-bold hover:bg-gray-100 transition-all transform hover:scale-105 active:scale-95"
           >
             {loading ? "Sending..." : "Send Code"}
           </button>

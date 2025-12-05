@@ -69,11 +69,12 @@ const Registration = () => {
     setLoading(true);
     try {
       await signup(formData.email, formData.password, formData.fullName, formData.university, acceptCookies);
-      router.push(`/auth/otp?email=${encodeURIComponent(formData.email)}`);
+      // router.push(`/auth/otp?email=${encodeURIComponent(formData.email)}`);
+      router.push(`/setup`);
 
     } catch (err) {
       setLoading(false);
-    } finally {
+    } finally {  
       setLoading(false);
     }
   };

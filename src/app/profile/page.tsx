@@ -21,8 +21,10 @@ import {
 import { getLifestyleLabel } from "@/src/api/profileApi";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import ProfileEditModal from "@/src/component/ProfileEditModel";
-import MainLayout from "@/src/component/MainLayout";
+import ProfileEditModal from "@/src/components/ProfileEditModal";
+import MainLayout from "@/src/components/MainLayout";
+import PageLoading from "@/src/components/PageLoading";
+import ErrorPage from "@/src/components/ErrorPage";
 import { useProfile } from "@/src/context/ProfileContext";
 import { listingApi, ListingResponse } from "@/src/api/listingApi";
 import { useAuth } from "@/src/context/authContext";

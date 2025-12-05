@@ -1,7 +1,6 @@
-import { Listing } from '@/src/component/home/ListingCard';
-import { BusinessAd } from '@/src/component/home/BusinessAdCard';
+import { Listing } from '@/src/components/home/ListingCard';
 
-export type FeedItem = Listing | BusinessAd;
+export type FeedItem = Listing;
 
 export const MOCK_FEED_ITEMS: FeedItem[] = [
     {
@@ -21,21 +20,6 @@ export const MOCK_FEED_ITEMS: FeedItem[] = [
         posterVerified: true,
         propertyImage: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400&h=300&fit=crop',
         availableFrom: 'Jan 1, 2025'
-    },
-    {
-        id: 'b1',
-        type: 'business',
-        businessType: 'eatery',
-        title: 'Campus Bites Restaurant',
-        description: '20% off for all UNILAG students! Fresh meals, fast delivery.',
-        image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&h=300&fit=crop',
-        link: '#',
-        targetUniversity: 'University of Lagos',
-        location: 'Akoka, Lagos',
-        isSponsored: true,
-        ctaText: 'Order Now',
-        rating: 4.8,
-        priceRange: '₦₦'
     },
     {
         id: '2',
@@ -72,21 +56,6 @@ export const MOCK_FEED_ITEMS: FeedItem[] = [
         posterVerified: true,
         propertyImage: 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=400&h=300&fit=crop',
         availableFrom: 'Immediate'
-    },
-    {
-        id: 'b2',
-        type: 'business',
-        businessType: 'barber',
-        title: 'Fresh Cuts Salon',
-        description: 'Best haircuts on campus. Student discount available every Tuesday.',
-        image: 'https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=400&h=300&fit=crop',
-        link: '#',
-        targetUniversity: 'All Universities',
-        location: 'Multiple Locations',
-        isSponsored: false,
-        ctaText: 'Book Appointment',
-        rating: 4.5,
-        priceRange: '₦'
     }
 ];
 

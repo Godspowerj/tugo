@@ -10,8 +10,7 @@ export default function PostNavigation() {
         canProceed,
         handlePrev,
         handleNext,
-        handleSubmit,
-        isBusinessAd
+        handleSubmit
     } = usePost();
 
     return (
@@ -47,7 +46,7 @@ export default function PostNavigation() {
                     ) : (
                         <>
                             <Check className="w-5 h-5" />
-                            Publish {isBusinessAd ? 'Business Ad' : 'Listing'}
+                            Publish Listing
                         </>
                     )}
                 </button>

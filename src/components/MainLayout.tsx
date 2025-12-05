@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import BottomNav from "@/src/component/navigation";
+import BottomNav from "@/src/components/navigation"
 
 interface MainLayoutProps {
     children: React.ReactNode;

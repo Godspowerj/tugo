@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { ArrowLeft, Lock, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
+import { apiClient } from "@/src/lib/axios";
 
 const NewPasswordContent = () => {
     const [newPassword, setNewPassword] = useState("");
@@ -15,6 +16,8 @@ const NewPasswordContent = () => {
     const email = searchParams.get("email") || "";
     const otp = searchParams.get("otp") || "";
 
+    // ... inside component ...
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!newPassword || !confirmPassword) return toast.error("Enter new password");
@@ -23,21 +26,16 @@ const NewPasswordContent = () => {
 
         setLoading(true);
         try {
-            const response = await fetch("http://localhost:5000/api/auth/password-reset/reset", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, otp, newPassword }),
-            });
-            const data = await response.json();
-            if (response.ok && data.success) {
+            const response = await apiClient.post("/auth/password-reset/reset", { email, otp, newPassword });
+            const data = response.data;
+            if (data.success) {
                 toast.success("Password reset successfully! Please login.");
                 router.push("/auth/login");
             } else {
                 toast.error(data.message || "Failed to reset password");
             }
-        } catch (error) {
-            toast.error("Network error");
-            console.error("Reset password error:", error);
+        } catch (error: any) {
+            toast.error(error.response?.data?.message || "Network error");
         } finally {
             setLoading(false);
         }
@@ -50,7 +48,7 @@ const NewPasswordContent = () => {
                     <Link href="/auth/login">
                         <button className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-6">
                             <ArrowLeft className="w-5 h-5" />
-                            <span>Cancel</span>
+                            <span>Back to Login</span>
                         </button>
                     </Link>
                 </div>
@@ -102,7 +100,7 @@ const NewPasswordContent = () => {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full py-4 bg-white text-black rounded-full font-bold hover:bg-gray-100 transition-all"
+                            className="w-full py-4 bg-white text-black rounded-full font-bold hover:bg-gray-100 transition-all transform hover:scale-105 active:scale-95"
                         >
                             {loading ? "Resetting..." : "Reset Password"}
                         </button>
