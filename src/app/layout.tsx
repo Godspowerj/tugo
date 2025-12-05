@@ -7,7 +7,7 @@ import { UIProvider } from "@/src/context/UIContext";
 import { ProfileProvider } from "@/src/context/ProfileContext";
 import { HomeProvider } from "@/src/context/HomeContext";
 import { PostProvider } from "@/src/context/PostContext";
-import ErrorBoundary from "@/src/components/ErrorBoundary";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -68,7 +68,6 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ErrorBoundary>
           <AuthProvider>
             <UIProvider>
               <ProfileProvider>
@@ -81,7 +80,6 @@ export default function RootLayout({
               </ProfileProvider>
             </UIProvider>
           </AuthProvider>
-        </ErrorBoundary>
       </body>
     </html>
   );
